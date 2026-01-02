@@ -1,0 +1,55 @@
+{
+  "name": "@sudobility/entity_pages",
+  "version": "0.0.1",
+  "description": "Page containers for entity/organization management",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "bun run build:esm && bun run build:cjs",
+    "build:esm": "bunx tsc -p tsconfig.esm.json",
+    "build:cjs": "bunx tsc -p tsconfig.cjs.json && bun run build:cjs-copy",
+    "build:cjs-copy": "find dist-cjs -name '*.js' | while read f; do cp \"$f\" \"dist/$(echo \"$f\" | sed 's|dist-cjs/||' | sed 's/.js$/.cjs/')\"; done && rm -rf dist-cjs",
+    "clean": "rm -rf dist dist-cjs",
+    "typecheck": "bunx tsc --noEmit",
+    "lint": "bunx eslint src --ext .ts,.tsx"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "@tanstack/react-query": "^5.0.0",
+    "@sudobility/types": "^1.0.0",
+    "@sudobility/entity_client": "^0.0.1",
+    "@sudobility/entity-components": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.8",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@tanstack/react-query": "^5.0.0",
+    "react": "^19.0.0",
+    "typescript": "^5.9.3",
+    "eslint": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "lucide-react": "^0.511.0"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "keywords": [
+    "entity",
+    "organization",
+    "react",
+    "pages",
+    "containers"
+  ],
+  "author": "Sudobility",
+  "license": "MIT"
+}
