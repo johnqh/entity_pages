@@ -1,6 +1,7 @@
 {
   "name": "@sudobility/entity_pages",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "type": "module",
   "description": "Page containers for entity/organization management",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -19,12 +20,13 @@
     "build:cjs-copy": "find dist-cjs -name '*.js' | while read f; do cp \"$f\" \"dist/$(echo \"$f\" | sed 's|dist-cjs/||' | sed 's/.js$/.cjs/')\"; done && rm -rf dist-cjs",
     "clean": "rm -rf dist dist-cjs",
     "typecheck": "bunx tsc --noEmit",
-    "lint": "bunx eslint src --ext .ts,.tsx"
+    "lint": "bunx eslint src --ext .ts,.tsx",
+    "test": "bun test"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "@tanstack/react-query": "^5.0.0",
-    "@sudobility/types": "^1.0.0",
+    "@sudobility/types": "^1.9.40",
     "@sudobility/entity_client": "^0.0.1",
     "@sudobility/entity-components": "^1.0.0"
   },
