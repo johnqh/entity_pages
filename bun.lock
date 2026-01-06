@@ -4,6 +4,9 @@
     "": {
       "name": "@sudobility/entity_pages",
       "devDependencies": {
+        "@sudobility/entity-components": "^1.0.2",
+        "@sudobility/entity_client": "^0.0.4",
+        "@sudobility/types": "^1.9.40",
         "@tanstack/react-query": "^5.0.0",
         "@types/bun": "^1.2.8",
         "@types/node": "^24.0.0",
@@ -137,9 +140,9 @@
 
     "@sudobility/design": ["@sudobility/design@1.1.15", "", { "peerDependencies": { "clsx": ">=2.0.0", "tailwind-merge": ">=2.0.0" } }, "sha512-n16P0lxWQJFDumKYsMjn3qnLhp8wL2k0p+qr7DvRCJgIOBGu+Ee7F1KGQI4DWqIxu0YapwkaZLJiqY9NEX24wA=="],
 
-    "@sudobility/entity-components": ["@sudobility/entity-components@1.0.0", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@sudobility/components": "^4.0.36", "@sudobility/design": "^1.1.14", "@sudobility/types": "^1.9.37", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-FbQk7vmBpoNzWt0uLWd9kd62Xs1VYk5iJIHbmZfdjlwUjoBbyJANZQIFXsrK1eNskqfwwB+TmSxRyMZGdVdcsQ=="],
+    "@sudobility/entity-components": ["@sudobility/entity-components@1.0.2", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@sudobility/components": "*", "@sudobility/design": "^1.1.14", "@sudobility/types": "^1.9.37", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-f19JpyMfbQxuAfiUCHevULLMWxH4XKVfkGiUYYs5vRH5g/zR0fm4FVZt0m//ZH/lfZxi//4KprLfB2mf4SNxoA=="],
 
-    "@sudobility/entity_client": ["@sudobility/entity_client@0.0.2", "", { "dependencies": { "@sudobility/types": "^1.9.40" }, "peerDependencies": { "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-IrLAEZTaKz6Wuu8r397JnmeR8hoGjDqfjvi0utBmdkcHNH+RNtug0ua/gmlwx6l2Saf/SKOXFLDyT5fBsnRAZw=="],
+    "@sudobility/entity_client": ["@sudobility/entity_client@0.0.4", "", { "peerDependencies": { "@sudobility/types": "^1.9.40", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-3dvObTwcULCgxd+L/syaFZOCGb59AFvod3YQyv874kFZZyrfDYkpqxoWX+z7BRUuR5ZOFabu2xT5DghGkkbFcQ=="],
 
     "@sudobility/types": ["@sudobility/types@1.9.40", "", {}, "sha512-OxG5KxSee+GnuFHTUj8kCI2ARpuTKec1MRiGqOFut6T2MSiv1YcA+Sfg+n+eh+mTMKi+VkjNRZi1hkrFePBkWQ=="],
 
