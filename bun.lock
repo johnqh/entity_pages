@@ -16,7 +16,7 @@
         "typescript": "^5.9.3",
       },
       "peerDependencies": {
-        "@sudobility/entity-components": "^1.0.0",
+        "@sudobility/entity-components": "^1.0.2",
         "@sudobility/entity_client": "^0.0.2",
         "@sudobility/types": "^1.9.40",
         "@tanstack/react-query": "^5.0.0",
