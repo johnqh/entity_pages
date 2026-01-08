@@ -5,8 +5,8 @@
       "name": "@sudobility/entity_pages",
       "devDependencies": {
         "@sudobility/entity-components": "^1.0.2",
-        "@sudobility/entity_client": "^0.0.4",
-        "@sudobility/types": "^1.9.40",
+        "@sudobility/entity_client": "^0.0.5",
+        "@sudobility/types": "^1.9.41",
         "@tanstack/react-query": "^5.0.0",
         "@types/bun": "^1.2.8",
         "@types/node": "^24.0.0",
@@ -20,8 +20,8 @@
       },
       "peerDependencies": {
         "@sudobility/entity-components": "^1.0.2",
-        "@sudobility/entity_client": "^0.0.4",
-        "@sudobility/types": "^1.9.40",
+        "@sudobility/entity_client": "^0.0.5",
+        "@sudobility/types": "^1.9.41",
         "@tanstack/react-query": "^5.0.0",
         "react": "^18.0.0 || ^19.0.0",
       },
@@ -142,9 +142,9 @@
 
     "@sudobility/entity-components": ["@sudobility/entity-components@1.0.2", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@sudobility/components": "*", "@sudobility/design": "^1.1.14", "@sudobility/types": "^1.9.37", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-f19JpyMfbQxuAfiUCHevULLMWxH4XKVfkGiUYYs5vRH5g/zR0fm4FVZt0m//ZH/lfZxi//4KprLfB2mf4SNxoA=="],
 
-    "@sudobility/entity_client": ["@sudobility/entity_client@0.0.4", "", { "peerDependencies": { "@sudobility/types": "^1.9.40", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-3dvObTwcULCgxd+L/syaFZOCGb59AFvod3YQyv874kFZZyrfDYkpqxoWX+z7BRUuR5ZOFabu2xT5DghGkkbFcQ=="],
+    "@sudobility/entity_client": ["@sudobility/entity_client@0.0.5", "", { "peerDependencies": { "@sudobility/types": "^1.9.41", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-iKEtgcUO0KVIkfyghuKyupjEHg72xQe2qXzyuOudC0IvQdL9Dqh9M31KopbEcFte0ZPFuxDcZbmxIIcEqfIZcA=="],
 
-    "@sudobility/types": ["@sudobility/types@1.9.40", "", {}, "sha512-OxG5KxSee+GnuFHTUj8kCI2ARpuTKec1MRiGqOFut6T2MSiv1YcA+Sfg+n+eh+mTMKi+VkjNRZi1hkrFePBkWQ=="],
+    "@sudobility/types": ["@sudobility/types@1.9.41", "", {}, "sha512-W2RuqIhCdhvNaNMiThT8zAZ8YcIbgPceb85Jh+UeGMG66fEn63fvdOSDKil72i/DySAWeab0yhse1Yl5lYDbnA=="],
 
     "@tanstack/query-core": ["@tanstack/query-core@5.90.16", "", {}, "sha512-MvtWckSVufs/ja463/K4PyJeqT+HMlJWtw6PrCpywznd2NSgO3m4KwO9RqbFqGg6iDE8vVMFWMeQI4Io3eEYww=="],
 
