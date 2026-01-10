@@ -8,3 +8,11 @@ export {
   type MembersManagementPageProps,
 } from './MembersManagementPage';
 export { InvitationsPage, type InvitationsPageProps } from './InvitationsPage';
+export {
+  EntitySubscriptionsPage,
+  type EntitySubscriptionsPageProps,
+  type SubscriptionProduct,
+  type CurrentSubscription,
+  type SubscriptionContextValue,
+  type TranslationFunction,
+} from './EntitySubscriptionsPage';
