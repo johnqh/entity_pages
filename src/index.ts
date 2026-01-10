@@ -35,4 +35,12 @@ export {
   type SubscriptionContextValue,
   type SubscriptionPageLabels,
   type SubscriptionPageFormatters,
+  EntityPricingPage,
+  type EntityPricingPageProps,
+  type PricingProduct,
+  type FAQItem,
+  type PricingPageLabels,
+  type PricingPageFormatters,
+  type EntitlementMap,
+  type EntitlementLevels,
 } from './pages';

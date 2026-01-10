@@ -122,6 +122,8 @@ export interface EntitySubscriptionsPageProps {
   subscription: SubscriptionContextValue;
   /** Rate limit configuration */
   rateLimitsConfig?: RateLimitsConfigData | null;
+  /** Entity ID used for subscription (the selected entity's ID when logged in) */
+  subscriptionUserId?: string;
   /** All localized labels */
   labels: SubscriptionPageLabels;
   /** Formatter functions for dynamic strings */
