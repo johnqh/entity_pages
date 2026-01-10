@@ -33,5 +33,6 @@ export {
   type SubscriptionProduct,
   type CurrentSubscription,
   type SubscriptionContextValue,
-  type TranslationFunction,
+  type SubscriptionPageLabels,
+  type SubscriptionPageFormatters,
 } from './pages';

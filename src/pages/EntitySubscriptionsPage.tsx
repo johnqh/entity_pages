@@ -43,20 +43,89 @@ export interface SubscriptionContextValue {
   clearError: () => void;
 }
 
-/** Translation function type */
-export type TranslationFunction = (
-  key: string,
-  defaultValueOrOptions?: string | Record<string, unknown>,
-  options?: Record<string, unknown>
-) => string;
+/** All localized labels for the subscription page */
+export interface SubscriptionPageLabels {
+  title: string;
+  errorTitle: string;
+  purchaseError: string;
+  restoreError: string;
+  restoreNoPurchases: string;
+
+  // Periods
+  periodYear: string;
+  periodMonth: string;
+  periodWeek: string;
+
+  // Billing period toggle
+  billingMonthly: string;
+  billingYearly: string;
+
+  // Rate limits
+  unlimited: string;
+  unlimitedRequests: string;
+
+  // Current status
+  currentStatusLabel: string;
+  statusActive: string;
+  statusInactive: string;
+  statusInactiveMessage: string;
+  labelPlan: string;
+  labelPremium: string;
+  labelExpires: string;
+  labelWillRenew: string;
+  labelMonthlyUsage: string;
+  labelDailyUsage: string;
+  yes: string;
+  no: string;
+
+  // Buttons
+  buttonSubscribe: string;
+  buttonPurchasing: string;
+  buttonRestore: string;
+  buttonRestoring: string;
+
+  // Empty states
+  noProducts: string;
+  noProductsForPeriod: string;
+
+  // Free tier
+  freeTierTitle: string;
+  freeTierPrice: string;
+  freeTierFeatures: string[];
+
+  // Badges
+  currentPlanBadge: string;
+}
+
+/** Formatter functions for dynamic strings */
+export interface SubscriptionPageFormatters {
+  /** Format rate limit: "1,000 requests/hour" */
+  formatHourlyLimit: (limit: string) => string;
+  /** Format rate limit: "10,000 requests/day" */
+  formatDailyLimit: (limit: string) => string;
+  /** Format rate limit: "100,000 requests/month" */
+  formatMonthlyLimit: (limit: string) => string;
+  /** Format trial period: "7 days free trial" */
+  formatTrialDays: (count: number) => string;
+  /** Format trial period: "2 weeks free trial" */
+  formatTrialWeeks: (count: number) => string;
+  /** Format trial period: "1 month free trial" */
+  formatTrialMonths: (count: number) => string;
+  /** Format savings badge: "Save 20%" */
+  formatSavePercent: (percent: number) => string;
+  /** Format intro price note */
+  formatIntroNote: (price: string) => string;
+}
 
 export interface EntitySubscriptionsPageProps {
   /** Subscription context value */
   subscription: SubscriptionContextValue;
   /** Rate limit configuration */
   rateLimitsConfig?: RateLimitsConfigData | null;
-  /** Translation function */
-  t: TranslationFunction;
+  /** All localized labels */
+  labels: SubscriptionPageLabels;
+  /** Formatter functions for dynamic strings */
+  formatters: SubscriptionPageFormatters;
   /** Called when purchase succeeds */
   onPurchaseSuccess?: () => void;
   /** Called when restore succeeds */
@@ -83,7 +152,8 @@ const PACKAGE_ENTITLEMENT_MAP: Record<string, string> = {
 export function EntitySubscriptionsPage({
   subscription,
   rateLimitsConfig,
-  t,
+  labels,
+  formatters,
   onPurchaseSuccess,
   onRestoreSuccess,
   onError,
@@ -107,10 +177,10 @@ export function EntitySubscriptionsPage({
   // Show error via callback
   useEffect(() => {
     if (error) {
-      onError?.(t('common.error'), error);
+      onError?.(labels.errorTitle, error);
       clearError();
     }
-  }, [error, clearError, t, onError]);
+  }, [error, clearError, labels.errorTitle, onError]);
 
   // Filter products by billing period and sort by price
   const filteredProducts = products
@@ -141,8 +211,8 @@ export function EntitySubscriptionsPage({
       }
     } catch (err) {
       onError?.(
-        t('common.error'),
-        err instanceof Error ? err.message : t('purchase.error')
+        labels.errorTitle,
+        err instanceof Error ? err.message : labels.purchaseError
       );
     } finally {
       setIsPurchasing(false);
@@ -158,12 +228,12 @@ export function EntitySubscriptionsPage({
       if (result) {
         onRestoreSuccess?.();
       } else {
-        onWarning?.(t('common.error'), t('restore.noPurchases'));
+        onWarning?.(labels.errorTitle, labels.restoreNoPurchases);
       }
     } catch (err) {
       onError?.(
-        t('common.error'),
-        err instanceof Error ? err.message : t('restore.error')
+        labels.errorTitle,
+        err instanceof Error ? err.message : labels.restoreError
       );
     } finally {
       setIsRestoring(false);
@@ -183,29 +253,29 @@ export function EntitySubscriptionsPage({
     (period?: string) => {
       if (!period) return '';
       if (period.includes('Y') || period.includes('year'))
-        return t('periods.year');
+        return labels.periodYear;
       if (period.includes('M') || period.includes('month'))
-        return t('periods.month');
+        return labels.periodMonth;
       if (period.includes('W') || period.includes('week'))
-        return t('periods.week');
+        return labels.periodWeek;
       return '';
     },
-    [t]
+    [labels]
   );
 
   const getTrialLabel = useCallback(
     (trialPeriod?: string) => {
       if (!trialPeriod) return undefined;
-      const num = trialPeriod.replace(/\D/g, '') || '1';
+      const num = parseInt(trialPeriod.replace(/\D/g, '') || '1', 10);
       if (trialPeriod.includes('W')) {
-        return t('trial.weeks', { count: parseInt(num, 10) });
+        return formatters.formatTrialWeeks(num);
       }
       if (trialPeriod.includes('M')) {
-        return t('trial.months', { count: parseInt(num, 10) });
+        return formatters.formatTrialMonths(num);
       }
-      return t('trial.days', { count: parseInt(num, 10) });
+      return formatters.formatTrialDays(num);
     },
-    [t]
+    [formatters]
   );
 
   const getRateLimitTierForProduct = useCallback(
@@ -226,10 +296,10 @@ export function EntitySubscriptionsPage({
 
   const formatRateLimit = useCallback(
     (limit: number | null): string => {
-      if (limit === null) return t('rateLimits.unlimited', 'Unlimited');
+      if (limit === null) return labels.unlimited;
       return limit.toLocaleString();
     },
-    [t]
+    [labels.unlimited]
   );
 
   const getRateLimitFeatures = useCallback(
@@ -241,23 +311,17 @@ export function EntitySubscriptionsPage({
 
       if (tier.limits.hourly !== null) {
         features.push(
-          t('rateLimits.hourly', '{{limit}} requests/hour', {
-            limit: formatRateLimit(tier.limits.hourly),
-          })
+          formatters.formatHourlyLimit(formatRateLimit(tier.limits.hourly))
         );
       }
       if (tier.limits.daily !== null) {
         features.push(
-          t('rateLimits.daily', '{{limit}} requests/day', {
-            limit: formatRateLimit(tier.limits.daily),
-          })
+          formatters.formatDailyLimit(formatRateLimit(tier.limits.daily))
         );
       }
       if (tier.limits.monthly !== null) {
         features.push(
-          t('rateLimits.monthly', '{{limit}} requests/month', {
-            limit: formatRateLimit(tier.limits.monthly),
-          })
+          formatters.formatMonthlyLimit(formatRateLimit(tier.limits.monthly))
         );
       }
 
@@ -266,14 +330,12 @@ export function EntitySubscriptionsPage({
         tier.limits.daily === null &&
         tier.limits.monthly === null
       ) {
-        features.push(
-          t('rateLimits.unlimitedRequests', 'Unlimited API requests')
-        );
+        features.push(labels.unlimitedRequests);
       }
 
       return features;
     },
-    [getRateLimitTierForProduct, formatRateLimit, t]
+    [getRateLimitTierForProduct, formatRateLimit, formatters, labels.unlimitedRequests]
   );
 
   const getProductFeatures = useCallback(
@@ -284,15 +346,7 @@ export function EntitySubscriptionsPage({
   );
 
   const getFreeTierFeatures = useCallback((): string[] => {
-    const benefits = [
-      t('freeTier.schemaValidation', 'JSON Schema-validated outputs'),
-      t(
-        'freeTier.allProviders',
-        'All LLM providers (OpenAI, Anthropic, Google)'
-      ),
-      t('freeTier.endpointTesting', 'Built-in endpoint testing'),
-      t('freeTier.analytics', 'Basic usage analytics'),
-    ];
+    const benefits = [...labels.freeTierFeatures];
 
     if (rateLimitsConfig?.tiers) {
       const freeTier = rateLimitsConfig.tiers.find(
@@ -301,30 +355,24 @@ export function EntitySubscriptionsPage({
       if (freeTier) {
         if (freeTier.limits.hourly !== null) {
           benefits.push(
-            t('rateLimits.hourly', '{{limit}} requests/hour', {
-              limit: formatRateLimit(freeTier.limits.hourly),
-            })
+            formatters.formatHourlyLimit(formatRateLimit(freeTier.limits.hourly))
           );
         }
         if (freeTier.limits.daily !== null) {
           benefits.push(
-            t('rateLimits.daily', '{{limit}} requests/day', {
-              limit: formatRateLimit(freeTier.limits.daily),
-            })
+            formatters.formatDailyLimit(formatRateLimit(freeTier.limits.daily))
           );
         }
         if (freeTier.limits.monthly !== null) {
           benefits.push(
-            t('rateLimits.monthly', '{{limit}} requests/month', {
-              limit: formatRateLimit(freeTier.limits.monthly),
-            })
+            formatters.formatMonthlyLimit(formatRateLimit(freeTier.limits.monthly))
           );
         }
       }
     }
 
     return benefits;
-  }, [rateLimitsConfig, formatRateLimit, t]);
+  }, [rateLimitsConfig, formatRateLimit, formatters, labels.freeTierFeatures]);
 
   const getYearlySavingsPercent = useCallback(
     (yearlyPackageId: string): number | undefined => {
@@ -361,47 +409,47 @@ export function EntitySubscriptionsPage({
   );
 
   const billingPeriodOptions = [
-    { value: 'monthly' as const, label: t('billingPeriod.monthly') },
-    { value: 'yearly' as const, label: t('billingPeriod.yearly') },
+    { value: 'monthly' as const, label: labels.billingMonthly },
+    { value: 'yearly' as const, label: labels.billingYearly },
   ];
 
   return (
     <SubscriptionLayout
-      title={t('title')}
+      title={labels.title}
       error={error}
-      currentStatusLabel={t('currentStatus.label')}
+      currentStatusLabel={labels.currentStatusLabel}
       currentStatus={{
         isActive: currentSubscription?.isActive ?? false,
         activeContent: currentSubscription?.isActive
           ? {
-              title: t('currentStatus.active'),
+              title: labels.statusActive,
               fields: [
                 {
-                  label: t('currentStatus.plan'),
+                  label: labels.labelPlan,
                   value:
                     currentSubscription.productIdentifier ||
-                    t('currentStatus.premium'),
+                    labels.labelPremium,
                 },
                 {
-                  label: t('currentStatus.expires'),
+                  label: labels.labelExpires,
                   value: formatExpirationDate(
                     currentSubscription.expirationDate
                   ),
                 },
                 {
-                  label: t('currentStatus.willRenew'),
+                  label: labels.labelWillRenew,
                   value: currentSubscription.willRenew
-                    ? t('common.yes')
-                    : t('common.no'),
+                    ? labels.yes
+                    : labels.no,
                 },
                 ...(rateLimitsConfig
                   ? [
                       {
-                        label: t('currentStatus.monthlyUsage', 'Monthly Usage'),
+                        label: labels.labelMonthlyUsage,
                         value: `${rateLimitsConfig.currentUsage.monthly.toLocaleString()} / ${formatRateLimit(rateLimitsConfig.currentLimits.monthly)}`,
                       },
                       {
-                        label: t('currentStatus.dailyUsage', 'Daily Usage'),
+                        label: labels.labelDailyUsage,
                         value: `${rateLimitsConfig.currentUsage.daily.toLocaleString()} / ${formatRateLimit(rateLimitsConfig.currentLimits.daily)}`,
                       },
                     ]
@@ -411,8 +459,8 @@ export function EntitySubscriptionsPage({
           : undefined,
         inactiveContent: !currentSubscription?.isActive
           ? {
-              title: t('currentStatus.inactive'),
-              message: t('currentStatus.inactiveMessage'),
+              title: labels.statusInactive,
+              message: labels.statusInactiveMessage,
             }
           : undefined,
       }}
@@ -428,13 +476,13 @@ export function EntitySubscriptionsPage({
         ) : null
       }
       primaryAction={{
-        label: isPurchasing ? t('buttons.purchasing') : t('buttons.subscribe'),
+        label: isPurchasing ? labels.buttonPurchasing : labels.buttonSubscribe,
         onClick: handlePurchase,
         disabled: !selectedPlan || isPurchasing || isRestoring,
         loading: isPurchasing,
       }}
       secondaryAction={{
-        label: isRestoring ? t('buttons.restoring') : t('buttons.restore'),
+        label: isRestoring ? labels.buttonRestoring : labels.buttonRestore,
         onClick: handleRestore,
         disabled: isPurchasing || isRestoring,
         loading: isRestoring,
@@ -446,11 +494,11 @@ export function EntitySubscriptionsPage({
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-12 text-theme-text-secondary">
-          {t('noProducts')}
+          {labels.noProducts}
         </div>
       ) : filteredProducts.length === 0 ? (
         <div className="text-center py-12 text-theme-text-secondary">
-          {t('noProductsForPeriod')}
+          {labels.noProductsForPeriod}
         </div>
       ) : (
         <>
@@ -458,16 +506,16 @@ export function EntitySubscriptionsPage({
           <SubscriptionTile
             key="free"
             id="free"
-            title={t('freeTier.title')}
-            price={t('freeTier.price')}
-            periodLabel={t('periods.month')}
+            title={labels.freeTierTitle}
+            price={labels.freeTierPrice}
+            periodLabel={labels.periodMonth}
             features={getFreeTierFeatures()}
             isSelected={!currentSubscription?.isActive && selectedPlan === null}
             onSelect={() => setSelectedPlan(null)}
             topBadge={
               !currentSubscription?.isActive
                 ? {
-                    text: t('badges.currentPlan', 'Current Plan'),
+                    text: labels.currentPlanBadge,
                     color: 'green',
                   }
                 : undefined
@@ -495,9 +543,7 @@ export function EntitySubscriptionsPage({
                       );
                       return savings && savings > 0
                         ? {
-                            text: t('badges.savePercent', 'Save {{percent}}%', {
-                              percent: savings,
-                            }),
+                            text: formatters.formatSavePercent(savings),
                             isBestValue: true,
                           }
                         : undefined;
@@ -508,7 +554,7 @@ export function EntitySubscriptionsPage({
                 product.freeTrialPeriod
                   ? getTrialLabel(product.freeTrialPeriod)
                   : product.introPrice
-                    ? t('intro.note', { price: product.introPrice })
+                    ? formatters.formatIntroNote(product.introPrice)
                     : undefined
               }
               disabled={isPurchasing || isRestoring}

@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/entity_pages",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "description": "Page containers for entity/organization management",
   "type": "module",
   "main": "dist/index.umd.js",
