@@ -28,13 +28,6 @@ vi.mock('@sudobility/entity-components', () => ({
   InvitationList: vi.fn(() => null),
 }));
 
-// Mock @sudobility/subscription-components
-vi.mock('@sudobility/subscription-components', () => ({
-  SubscriptionLayout: vi.fn(() => null),
-  SubscriptionTile: vi.fn(() => null),
-  SegmentedControl: vi.fn(() => null),
-}));
-
 // Mock @sudobility/components (transitive dependency)
 vi.mock('@sudobility/components', () => ({}));
 
@@ -42,7 +35,6 @@ import {
   EntityListPage,
   MembersManagementPage,
   InvitationsPage,
-  EntitySubscriptionsPage,
 } from './index';
 
 describe('entity_pages exports', () => {
@@ -59,11 +51,6 @@ describe('entity_pages exports', () => {
   test('exports InvitationsPage component', () => {
     expect(InvitationsPage).toBeDefined();
     expect(typeof InvitationsPage).toBe('function');
-  });
-
-  test('exports EntitySubscriptionsPage component', () => {
-    expect(EntitySubscriptionsPage).toBeDefined();
-    expect(typeof EntitySubscriptionsPage).toBe('function');
   });
 });
 
@@ -83,11 +70,5 @@ describe('MembersManagementPage', () => {
 describe('InvitationsPage', () => {
   test('is a valid React function component', () => {
     expect(InvitationsPage.name).toBe('InvitationsPage');
-  });
-});
-
-describe('EntitySubscriptionsPage', () => {
-  test('is a valid React function component', () => {
-    expect(EntitySubscriptionsPage.name).toBe('EntitySubscriptionsPage');
   });
 });
