@@ -2,7 +2,7 @@
  * @fileoverview Tests for Entity Pages module exports
  */
 
-import { describe, test, expect } from 'bun:test';
+import { describe, test, expect } from 'vitest';
 import {
   EntityListPage,
   MembersManagementPage,

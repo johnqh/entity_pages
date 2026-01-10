@@ -1,60 +1,85 @@
 {
   "name": "@sudobility/entity_pages",
-  "version": "0.0.8",
-  "type": "module",
+  "version": "0.0.9",
   "description": "Page containers for entity/organization management",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "type": "module",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.umd.js"
     }
   },
-  "scripts": {
-    "build": "bun run build:esm && bun run build:cjs",
-    "build:esm": "bunx tsc -p tsconfig.esm.json",
-    "build:cjs": "bunx tsc -p tsconfig.cjs.json && bun run build:cjs-copy",
-    "build:cjs-copy": "find dist-cjs -name '*.js' | while read f; do cp \"$f\" \"dist/$(echo \"$f\" | sed 's|dist-cjs/||' | sed 's/.js$/.cjs/')\"; done && rm -rf dist-cjs",
-    "clean": "rm -rf dist dist-cjs",
-    "typecheck": "bunx tsc --noEmit",
-    "lint": "bunx eslint src --ext .ts,.tsx",
-    "test": "bun test"
-  },
-  "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "@tanstack/react-query": "^5.0.0",
-    "@sudobility/types": "^1.9.43",
-    "@sudobility/entity_client": "^0.0.7",
-    "@sudobility/entity-components": "^1.0.3"
-  },
-  "devDependencies": {
-    "@sudobility/entity_client": "^0.0.7",
-    "@sudobility/entity-components": "^1.0.3",
-    "@sudobility/types": "^1.9.43",
-    "@types/bun": "^1.2.8",
-    "@types/node": "^24.0.0",
-    "@types/react": "^19.0.0",
-    "@tanstack/react-query": "^5.0.0",
-    "react": "^19.0.0",
-    "typescript": "^5.9.3",
-    "eslint": "^9.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
-    "lucide-react": "^0.511.0"
-  },
   "files": [
-    "dist/**/*"
+    "dist",
+    "README.md"
   ],
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite build --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
   "keywords": [
     "entity",
     "organization",
     "react",
     "pages",
-    "containers"
+    "containers",
+    "typescript"
   ],
   "author": "Sudobility",
-  "license": "MIT"
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "@tanstack/react-query": "^5.0.0",
+    "@sudobility/types": "^1.9.43",
+    "@sudobility/entity_client": "^0.0.8",
+    "@sudobility/entity-components": "^1.0.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "@sudobility/entity-components": "^1.0.3",
+    "@sudobility/entity_client": "^0.0.8",
+    "@sudobility/types": "^1.9.43",
+    "@tanstack/react-query": "^5.0.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^16.0.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "ajv": "^8.17.1",
+    "eslint": "^9.38.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "eslint-plugin-react-refresh": "^0.4.0",
+    "globals": "^16.2.0",
+    "jsdom": "^24.0.0",
+    "lucide-react": "^0.511.0",
+    "prettier": "^3.6.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.32.1",
+    "vite": "^7.1.12",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^1.3.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.52.5",
+    "@rollup/rollup-linux-x64-musl": "4.52.5"
+  }
 }

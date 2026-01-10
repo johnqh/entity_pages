@@ -13,6 +13,7 @@ export default [
       "**/*.spec.ts",
       "**/*.spec.tsx",
       "eslint.config.js",
+      "vite.config.ts",
     ],
   },
   {
