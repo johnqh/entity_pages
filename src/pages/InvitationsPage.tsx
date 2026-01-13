@@ -1,8 +1,12 @@
 /**
  * @fileoverview Invitations Page
- * @description Page for viewing and responding to pending invitations
+ * @description Page for viewing and responding to pending invitations.
+ *
+ * This component uses Section internally for proper page layout.
+ * Do NOT wrap this component in a Section when consuming it.
  */
 
+import { Section } from '@sudobility/components';
 import { InvitationList } from '@sudobility/entity-components';
 import {
   useMyInvitations,
@@ -51,9 +55,9 @@ export function InvitationsPage({
   const pendingCount = invitations.filter(inv => inv.status === 'pending').length;
 
   return (
-    <div className="space-y-6">
+    <Section spacing="lg" maxWidth="4xl">
       {/* Header */}
-      <div>
+      <div className="mb-6">
         <h1 className="text-2xl font-bold text-foreground">Invitations</h1>
         <p className="text-muted-foreground">
           {pendingCount > 0
@@ -71,6 +75,6 @@ export function InvitationsPage({
         isLoading={isLoading}
         emptyMessage="You don't have any pending invitations"
       />
-    </div>
+    </Section>
   );
 }

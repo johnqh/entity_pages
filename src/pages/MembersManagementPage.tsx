@@ -1,8 +1,12 @@
 /**
  * @fileoverview Members Management Page
- * @description Page container for managing entity members and invitations
+ * @description Page container for managing entity members and invitations.
+ *
+ * This component uses Section internally for proper page layout.
+ * Do NOT wrap this component in a Section when consuming it.
  */
 
+import { Section } from '@sudobility/components';
 import {
   MemberList,
   InvitationForm,
@@ -103,19 +107,21 @@ export function MembersManagementPage({
   // Personal entities don't have members to manage
   if (entity.entityType === 'personal') {
     return (
-      <div className="text-center py-12 text-muted-foreground">
-        <p>Personal workspaces cannot have additional members.</p>
-        <p className="mt-2">
-          Create an organization to collaborate with others.
-        </p>
-      </div>
+      <Section spacing="lg" maxWidth="4xl">
+        <div className="text-center py-12 text-muted-foreground">
+          <p>Personal workspaces cannot have additional members.</p>
+          <p className="mt-2">
+            Create an organization to collaborate with others.
+          </p>
+        </div>
+      </Section>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <Section spacing="lg" maxWidth="4xl">
       {/* Header */}
-      <div>
+      <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground">Members</h1>
         <p className="text-muted-foreground">
           Manage members and invitations for {entity.displayName}
@@ -124,7 +130,7 @@ export function MembersManagementPage({
 
       {/* Invite Form */}
       {canManage && (
-        <div className="rounded-lg border p-4">
+        <div className="rounded-lg border p-4 mb-8">
           <h2 className="text-lg font-semibold mb-4">Invite Members</h2>
           <InvitationForm
             onSubmit={handleInvite}
@@ -135,7 +141,7 @@ export function MembersManagementPage({
 
       {/* Pending Invitations */}
       {canManage && (
-        <div>
+        <div className="mb-8">
           <h2 className="text-lg font-semibold mb-3">Pending Invitations</h2>
           <InvitationList
             invitations={invitations}
@@ -161,6 +167,6 @@ export function MembersManagementPage({
           isLoading={membersLoading}
         />
       </div>
-    </div>
+    </Section>
   );
 }

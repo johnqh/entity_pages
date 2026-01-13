@@ -1,10 +1,14 @@
 /**
  * @fileoverview Entity List Page
- * @description Page container for listing all user's entities
+ * @description Page container for listing all user's entities.
+ *
+ * This component uses Section internally for proper page layout.
+ * Do NOT wrap this component in a Section when consuming it.
  */
 
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
+import { Section } from '@sudobility/components';
 import { EntityList } from '@sudobility/entity-components';
 import {
   useEntities,
@@ -66,9 +70,9 @@ export function EntityListPage({
   };
 
   return (
-    <div className="space-y-8">
+    <Section spacing="lg" maxWidth="4xl">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Workspaces</h1>
           <p className="text-muted-foreground">
@@ -155,7 +159,7 @@ export function EntityListPage({
 
       {/* Personal Workspace */}
       {personalEntities.length > 0 && (
-        <div>
+        <div className="mb-8">
           <h2 className="text-lg font-semibold mb-3">Personal Workspace</h2>
           <EntityList
             entities={personalEntities}
@@ -187,6 +191,6 @@ export function EntityListPage({
           />
         )}
       </div>
-    </div>
+    </Section>
   );
 }
