@@ -27,7 +27,8 @@ export default defineConfig({
         '@sudobility/subscription-components',
         '@sudobility/types',
         '@tanstack/react-query',
-        'lucide-react',
+        '@heroicons/react',
+        '@sudobility/components',
       ],
       output: {
         globals: {
@@ -39,7 +40,8 @@ export default defineConfig({
           '@sudobility/subscription-components': 'SudobilitySubscriptionComponents',
           '@sudobility/types': 'SudobilityTypes',
           '@tanstack/react-query': 'TanStackReactQuery',
-          'lucide-react': 'LucideReact',
+          '@heroicons/react': 'HeroiconsReact',
+          '@sudobility/components': 'SudobilityComponents',
         },
       },
     },

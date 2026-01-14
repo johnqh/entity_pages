@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/entity_pages",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "Page containers for entity/organization management",
   "type": "module",
   "main": "dist/index.umd.js",
@@ -42,13 +42,13 @@
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
     "@tanstack/react-query": "^5.0.0",
-    "@sudobility/components": "^4.0.153",
+    "@sudobility/components": "^4.0.155",
     "@sudobility/entity_client": "^0.0.14",
     "@sudobility/entity-components": "^1.0.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
-    "@sudobility/components": "^4.0.153",
+    "@sudobility/components": "^4.0.155",
     "@sudobility/entity-components": "^1.0.4",
     "@sudobility/entity_client": "^0.0.14",
     "@tanstack/react-query": "^5.0.0",
@@ -65,7 +65,6 @@
     "eslint-plugin-react-refresh": "^0.4.0",
     "globals": "^16.2.0",
     "jsdom": "^24.0.0",
-    "lucide-react": "^0.511.0",
     "prettier": "^3.6.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -82,5 +81,8 @@
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.52.5",
     "@rollup/rollup-linux-x64-musl": "4.52.5"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.2.0"
   }
 }

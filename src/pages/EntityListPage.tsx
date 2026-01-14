@@ -7,7 +7,7 @@
  */
 
 import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import { Section } from '@sudobility/components';
 import { EntityList } from '@sudobility/entity-components';
 import {
@@ -84,7 +84,7 @@ export function EntityListPage({
           onClick={() => setShowCreateForm(true)}
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
         >
-          <Plus className="h-4 w-4" />
+          <PlusIcon className="h-4 w-4" />
           <span>New Organization</span>
         </button>
       </div>
