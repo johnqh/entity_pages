@@ -9,7 +9,7 @@
       "devDependencies": {
         "@eslint/js": "^9.38.0",
         "@sudobility/components": "^4.0.156",
-        "@sudobility/entity-components": "^1.0.5",
+        "@sudobility/entity-components": "^1.0.6",
         "@sudobility/entity_client": "^0.0.14",
         "@tanstack/react-query": "^5.0.0",
         "@testing-library/dom": "^10.4.0",
@@ -41,7 +41,7 @@
       },
       "peerDependencies": {
         "@sudobility/components": "^4.0.156",
-        "@sudobility/entity-components": "^1.0.5",
+        "@sudobility/entity-components": "^1.0.6",
         "@sudobility/entity_client": "^0.0.14",
         "@tanstack/react-query": "^5.0.0",
         "react": "^18.0.0 || ^19.0.0",
@@ -352,7 +352,7 @@
 
     "@sudobility/design": ["@sudobility/design@1.1.15", "", { "peerDependencies": { "clsx": ">=2.0.0", "tailwind-merge": ">=2.0.0" } }, "sha512-n16P0lxWQJFDumKYsMjn3qnLhp8wL2k0p+qr7DvRCJgIOBGu+Ee7F1KGQI4DWqIxu0YapwkaZLJiqY9NEX24wA=="],
 
-    "@sudobility/entity-components": ["@sudobility/entity-components@1.0.5", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@sudobility/components": "*", "@sudobility/design": "^1.1.14", "@sudobility/types": "^1.9.43", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-tX3JEErkC/V2PA04WtCYRd8gHxn7cswEUQhFgODhJKFDB3GHWbLkv0L5QnYHzbFw7OBSEAUzx0A9kvePLTUJSw=="],
+    "@sudobility/entity-components": ["@sudobility/entity-components@1.0.6", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@sudobility/components": "^4.0.156", "@sudobility/design": "^1.1.18", "@sudobility/types": "^1.9.44", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-Oz25cH6d+OvZcVoGECd7+Su8CZ2AmmwpVdWJFOj3GcLUlkrGYD9HjeGVtT/Qy0lCwgRUUrJjwnyxD4XWpvSL8Q=="],
 
     "@sudobility/entity_client": ["@sudobility/entity_client@0.0.14", "", { "peerDependencies": { "@sudobility/types": "^1.9.44", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-aXMftk+MgpMKfptXJnUj9gDJiZUIehm5aYBYCmEsF2q0Sv5ZIkgQQV77O6+rutpRJHHqgdMM8+cXZNcLqlft5A=="],
 
