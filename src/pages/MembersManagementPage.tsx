@@ -40,7 +40,7 @@ export function MembersManagementPage({
   entity,
   currentUserId,
 }: MembersManagementPageProps) {
-  const canManage = entity.userRole === 'admin';
+  const canManage = entity.userRole === 'owner';
 
   // Members
   const { data: members = [], isLoading: membersLoading } = useEntityMembers(
