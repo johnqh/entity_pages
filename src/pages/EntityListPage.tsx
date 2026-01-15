@@ -126,7 +126,7 @@ export function EntityListPage({
                   }
                   placeholder="What is this organization for?"
                   rows={3}
-                  className="w-full px-3 py-2 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  className="w-full px-3 py-2 rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-y"
                 />
               </div>
               {createError && (
