@@ -6,8 +6,8 @@
       "devDependencies": {
         "@eslint/js": "^9.38.0",
         "@heroicons/react": "^2.2.0",
-        "@sudobility/components": "^4.0.160",
-        "@sudobility/entity-components": "^1.0.7",
+        "@sudobility/components": "^4.0.161",
+        "@sudobility/entity-components": "^1.0.8",
         "@sudobility/entity_client": "^0.0.16",
         "@sudobility/types": "^1.9.46",
         "@tanstack/react-query": "^5.0.0",
@@ -40,8 +40,8 @@
       },
       "peerDependencies": {
         "@heroicons/react": "^2.2.0",
-        "@sudobility/components": "^4.0.160",
-        "@sudobility/entity-components": "^1.0.7",
+        "@sudobility/components": "^4.0.161",
+        "@sudobility/entity-components": "^1.0.8",
         "@sudobility/entity_client": "^0.0.16",
         "@sudobility/types": "^1.9.46",
         "@tanstack/react-query": "^5.0.0",
@@ -349,11 +349,11 @@
 
     "@sinclair/typebox": ["@sinclair/typebox@0.27.8", "", {}, "sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA=="],
 
-    "@sudobility/components": ["@sudobility/components@4.0.160", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@heroicons/react": ">=2.0.0", "@radix-ui/react-alert-dialog": ">=1.0.0", "@radix-ui/react-dialog": ">=1.0.0", "@radix-ui/react-label": ">=2.0.0", "@radix-ui/react-select": ">=2.0.0", "@radix-ui/react-slot": ">=1.0.0", "@radix-ui/react-switch": ">=1.0.0", "@radix-ui/react-tabs": ">=1.0.0", "@sudobility/design": "^1.1.18", "@sudobility/types": "^1.9.46", "class-variance-authority": ">=0.7.0", "clsx": ">=2.0.0", "i18next": ">=23.0.0", "react": ">=18.0.0", "react-dom": ">=18.0.0", "react-i18next": ">=14.0.0", "react-router-dom": ">=6.0.0", "tailwind-merge": ">=2.0.0", "web-vitals": ">=3.0.0" } }, "sha512-wsAkIBnQtHmQmVy/Fz6AEm/FicaYR5k+HqXfiNLuz5jxHLztjge3iamqap0QJAOT2x/Ziq/EY007FvPy6xbeGg=="],
+    "@sudobility/components": ["@sudobility/components@4.0.161", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@heroicons/react": ">=2.0.0", "@radix-ui/react-alert-dialog": ">=1.0.0", "@radix-ui/react-dialog": ">=1.0.0", "@radix-ui/react-label": ">=2.0.0", "@radix-ui/react-select": ">=2.0.0", "@radix-ui/react-slot": ">=1.0.0", "@radix-ui/react-switch": ">=1.0.0", "@radix-ui/react-tabs": ">=1.0.0", "@sudobility/design": "^1.1.18", "@sudobility/types": "^1.9.46", "class-variance-authority": ">=0.7.0", "clsx": ">=2.0.0", "i18next": ">=23.0.0", "react": ">=18.0.0", "react-dom": ">=18.0.0", "react-i18next": ">=14.0.0", "react-router-dom": ">=6.0.0", "tailwind-merge": ">=2.0.0", "web-vitals": ">=3.0.0" } }, "sha512-Iu2/E9WSjqnZW5IaDwoDbV/xZwIKO5b8qic4a/8OtXh7TxiEwp9hSkNkOTg8GS5R5qNuIv1dUHpIZ8r24IjmyA=="],
 
     "@sudobility/design": ["@sudobility/design@1.1.15", "", { "peerDependencies": { "clsx": ">=2.0.0", "tailwind-merge": ">=2.0.0" } }, "sha512-n16P0lxWQJFDumKYsMjn3qnLhp8wL2k0p+qr7DvRCJgIOBGu+Ee7F1KGQI4DWqIxu0YapwkaZLJiqY9NEX24wA=="],
 
-    "@sudobility/entity-components": ["@sudobility/entity-components@1.0.7", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@sudobility/components": "^4.0.156", "@sudobility/design": "^1.1.18", "@sudobility/types": "^1.9.44", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-Ff3cUia7sYZWnqGT5pRqMjuF8ONWm89PfeuX/Ddhs7zBQpQ041elOLQGp3EDj7UvCSV/7X40ooU/Q4fY1POf2w=="],
+    "@sudobility/entity-components": ["@sudobility/entity-components@1.0.8", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@sudobility/components": "^4.0.160", "@sudobility/design": "^1.1.18", "@sudobility/types": "^1.9.46", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-bciTtSMyA6G/y92zlEvol5ncEuz76Ste5t+LF8Spw/WX1qvbTHvMZkyvdXfngW6PmiyAQ6PFX+z2DUy6g6Rdig=="],
 
     "@sudobility/entity_client": ["@sudobility/entity_client@0.0.16", "", { "peerDependencies": { "@sudobility/types": "^1.9.46", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-cKmmHPxGL8fCJJHV62ZBMuqIVcyHd90S0AGdUV+sGCp6GH1Pyk2kf5P9MiIRqQFjBKT+QcpQfQ90G2D9oS/Gzw=="],
 
