@@ -8,6 +8,7 @@ Page containers for entity/organization management in React applications.
 
 - **Language**: TypeScript
 - **Runtime**: Bun
+- **Package Manager**: Bun (do not use npm/yarn/pnpm for installing dependencies)
 - **Build**: TypeScript compiler (dual ESM/CJS)
 - **UI**: Requires @sudobility/entity-components
 - **Data**: Uses @sudobility/entity_client hooks
