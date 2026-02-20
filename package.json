@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/entity_pages",
-  "version": "0.0.44",
+  "version": "0.0.45",
   "description": "Page containers for entity/organization management",
   "type": "module",
   "main": "dist/index.umd.js",
@@ -44,7 +44,7 @@
     "@tanstack/react-query": "^5.0.0",
     "@sudobility/components": "^5.0.10",
     "@sudobility/entity_client": "^0.0.19",
-    "@sudobility/entity-components": "^1.0.9",
+    "@sudobility/entity-components": "^1.0.10",
     "@heroicons/react": "^2.2.0",
     "@sudobility/types": "^1.9.50"
   },
@@ -52,7 +52,7 @@
     "@eslint/js": "^9.38.0",
     "@heroicons/react": "^2.2.0",
     "@sudobility/components": "^5.0.10",
-    "@sudobility/entity-components": "^1.0.9",
+    "@sudobility/entity-components": "^1.0.10",
     "@sudobility/entity_client": "^0.0.19",
     "@sudobility/types": "^1.9.50",
     "@tanstack/react-query": "^5.0.0",
