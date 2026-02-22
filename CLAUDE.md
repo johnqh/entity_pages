@@ -113,3 +113,51 @@ export function MembersPage(props: PageProps) {
 ### Error Boundaries
 - Each page should be wrapped in an error boundary
 - Pages show inline errors for data fetching failures
+
+## Workspace Context
+
+This project is part of the **ShapeShyft** multi-project workspace at the parent directory. See `../CLAUDE.md` for the full architecture, dependency graph, and build order.
+
+## Downstream Impact
+
+| Downstream Consumer | Relationship |
+|---------------------|-------------|
+| `shapeshyft_app` | Direct dependency - renders entity management pages |
+
+After making changes:
+1. Run checks (no `verify` script - see below)
+2. `npm publish`
+3. In `shapeshyft_app`: `bun update @sudobility/entity_pages` -> rebuild
+
+Note: this package depends on `@sudobility/entity_client` and `@sudobility/entity-components`, which are **separate repos outside this workspace**.
+
+## Local Dev Workflow
+
+```bash
+# In this project:
+bun link
+
+# In shapeshyft_app:
+bun link @sudobility/entity_pages
+
+# Rebuild after changes:
+bun run build
+
+# When done, unlink:
+bun unlink @sudobility/entity_pages && bun install
+```
+
+## Pre-Commit Checklist
+
+No `verify` script. Run checks manually:
+
+```bash
+bun run type-check && bun run lint && bun test && bun run build
+```
+
+## Gotchas
+
+- **Typecheck command is `type-check` (hyphenated)** -- differs from most other workspace projects which use `typecheck`. Running `bun run typecheck` will silently do nothing.
+- **This package does NOT depend on `entity_service`** -- despite similar naming. It depends on `@sudobility/entity_client` (frontend hooks) and `@sudobility/entity-components` (UI), which are separate repos.
+- **Vite library mode build** -- produces ESM + UMD. Build is `tsc && vite build`, not just `tsc`.
+- **Heavy peer dependency list (7 packages)** -- missing any causes confusing build errors in consumers.
