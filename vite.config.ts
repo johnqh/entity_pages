@@ -19,9 +19,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'EntityPages',
-      formats: ['es', 'umd'],
-      fileName: (format) => `index.${format === 'es' ? 'esm' : format}.js`,
+      formats: ['es'],
+      fileName: () => `index.js`,
     },
     rollupOptions: {
       external: [
@@ -37,18 +36,7 @@ export default defineConfig({
         '@sudobility/components',
       ],
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'jsxRuntime',
-          '@sudobility/entity_client': 'SudobilityEntityClient',
-          '@sudobility/entity-components': 'SudobilityEntityComponents',
-          '@sudobility/subscription-components': 'SudobilitySubscriptionComponents',
-          '@sudobility/types': 'SudobilityTypes',
-          '@tanstack/react-query': 'TanStackReactQuery',
-          '@heroicons/react': 'HeroiconsReact',
-          '@sudobility/components': 'SudobilityComponents',
-        },
+        exports: 'named',
       },
     },
   },
