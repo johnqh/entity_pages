@@ -8,6 +8,7 @@
 
 import { useState } from 'react';
 import { Section } from '@sudobility/components';
+import { ui } from '@sudobility/design';
 import { InvitationList } from '@sudobility/entity-components';
 import {
   useMyInvitations,
@@ -54,7 +55,7 @@ function DeclineConfirmationDialog({
 }) {
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className={`fixed inset-0 z-50 flex items-center justify-center ${ui.background.overlay} p-4`}
       role="dialog"
       aria-modal="true"
       aria-label="Decline invitation"

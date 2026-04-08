@@ -9,6 +9,7 @@
 import { useState } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { Section } from '@sudobility/components';
+import { ui } from '@sudobility/design';
 import { EntityList } from '@sudobility/entity-components';
 import {
   useEntities,
@@ -119,7 +120,7 @@ export function EntityListPage({
         {/* Create Form Modal */}
         {showCreateForm && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            className={`fixed inset-0 z-50 flex items-center justify-center ${ui.background.overlay} p-4`}
             role="dialog"
             aria-modal="true"
             aria-label="Create organization"
