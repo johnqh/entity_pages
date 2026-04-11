@@ -1,6 +1,6 @@
 {
   "name": "@sudobility/entity_pages",
-  "version": "0.0.94",
+  "version": "0.0.95",
   "description": "Page containers for entity/organization management",
   "type": "module",
   "main": "dist/index.js",
@@ -40,7 +40,7 @@
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
     "@tanstack/react-query": "^5.0.0",
-    "@sudobility/components": "^5.0.56",
+    "@sudobility/components": "^5.0.57",
     "@sudobility/entity_client": "^0.0.33",
     "@sudobility/entity-components": "^1.0.13",
     "@heroicons/react": "^2.2.0",
@@ -50,7 +50,7 @@
   "devDependencies": {
     "@eslint/js": "^9.38.0",
     "@heroicons/react": "^2.2.0",
-    "@sudobility/components": "^5.0.56",
+    "@sudobility/components": "^5.0.57",
     "@sudobility/design": "^1.1.28",
     "@sudobility/entity-components": "^1.0.13",
     "@sudobility/entity_client": "^0.0.33",
