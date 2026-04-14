@@ -3,7 +3,13 @@
  */
 
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 // Mock @sudobility/entity_client hooks
@@ -21,10 +27,8 @@ vi.mock('@sudobility/entity_client', () => ({
   useRemoveMember: (...args: unknown[]) => mockUseRemoveMember(...args),
   useEntityInvitations: (...args: unknown[]) =>
     mockUseEntityInvitations(...args),
-  useCreateInvitation: (...args: unknown[]) =>
-    mockUseCreateInvitation(...args),
-  useCancelInvitation: (...args: unknown[]) =>
-    mockUseCancelInvitation(...args),
+  useCreateInvitation: (...args: unknown[]) => mockUseCreateInvitation(...args),
+  useCancelInvitation: (...args: unknown[]) => mockUseCancelInvitation(...args),
 }));
 
 // Mock @sudobility/entity-components
@@ -44,7 +48,7 @@ vi.mock('@sudobility/entity-components', () => ({
     isLoading?: boolean;
   }) => (
     <div
-      data-testid="member-list"
+      data-testid='member-list'
       data-loading={isLoading}
       data-can-manage={canManage}
     >
@@ -79,14 +83,14 @@ vi.mock('@sudobility/entity-components', () => ({
     isSubmitting?: boolean;
   }) => (
     <form
-      data-testid="invitation-form"
+      data-testid='invitation-form'
       data-submitting={isSubmitting}
       onSubmit={e => {
         e.preventDefault();
         onSubmit({ email: 'test@example.com', role: 'member' });
       }}
     >
-      <button type="submit">Invite</button>
+      <button type='submit'>Invite</button>
     </form>
   ),
   InvitationList: ({
@@ -100,7 +104,7 @@ vi.mock('@sudobility/entity-components', () => ({
     isLoading?: boolean;
     emptyMessage?: string;
   }) => (
-    <div data-testid="invitation-list" data-loading={isLoading}>
+    <div data-testid='invitation-list' data-loading={isLoading}>
       {invitations.map((inv: any) => (
         <div key={inv.id} data-testid={`invitation-${inv.id}`}>
           <span>{inv.email}</span>
@@ -121,7 +125,7 @@ vi.mock('@sudobility/entity-components', () => ({
 // Mock @sudobility/components
 vi.mock('@sudobility/components', () => ({
   Section: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="section">{children}</div>
+    <div data-testid='section'>{children}</div>
   ),
 }));
 
@@ -249,7 +253,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockPersonalEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -280,7 +284,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -309,7 +313,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -343,14 +347,12 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
       expect(screen.getByText('Failed to load members')).toBeInTheDocument();
-      expect(
-        screen.getByText('Failed to fetch members')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Failed to fetch members')).toBeInTheDocument();
 
       fireEvent.click(
         screen.getByRole('button', { name: /retry loading members/i })
@@ -379,7 +381,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -415,7 +417,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -442,7 +444,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -471,7 +473,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -508,7 +510,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={memberEntity as any}
-          currentUserId="user-2"
+          currentUserId='user-2'
         />
       );
 
@@ -535,7 +537,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -564,7 +566,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -603,13 +605,15 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
       fireEvent.click(screen.getByTestId('remove-member-2'));
       const dialog = screen.getByRole('dialog');
-      fireEvent.click(within(dialog).getByRole('button', { name: /^remove$/i }));
+      fireEvent.click(
+        within(dialog).getByRole('button', { name: /^remove$/i })
+      );
 
       await waitFor(() => {
         expect(removeFn).toHaveBeenCalledWith({
@@ -639,7 +643,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -670,7 +674,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -709,7 +713,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -748,7 +752,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -786,7 +790,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 
@@ -816,7 +820,7 @@ describe('MembersManagementPage', () => {
         <MembersManagementPage
           client={mockClient}
           entity={mockOrgEntity as any}
-          currentUserId="user-1"
+          currentUserId='user-1'
         />
       );
 

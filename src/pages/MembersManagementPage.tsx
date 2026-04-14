@@ -43,14 +43,14 @@ export interface MembersManagementPageProps {
  */
 function MembersSkeleton() {
   return (
-    <div className="space-y-3" role="status" aria-label="Loading members">
+    <div className='space-y-3' role='status' aria-label='Loading members'>
       {[1, 2, 3].map(i => (
         <div
           key={i}
-          className="h-14 sm:h-16 rounded-lg bg-muted animate-pulse"
+          className='h-14 sm:h-16 rounded-lg bg-muted animate-pulse'
         />
       ))}
-      <span className="sr-only">Loading members...</span>
+      <span className='sr-only'>Loading members...</span>
     </div>
   );
 }
@@ -74,8 +74,8 @@ function ConfirmationDialog({
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center ${ui.background.overlay} p-4`}
-      role="dialog"
-      aria-modal="true"
+      role='dialog'
+      aria-modal='true'
       aria-label={title}
       onClick={e => {
         if (e.target === e.currentTarget) onCancel();
@@ -84,21 +84,21 @@ function ConfirmationDialog({
         if (e.key === 'Escape') onCancel();
       }}
     >
-      <div className="w-full max-w-sm rounded-lg bg-background p-4 sm:p-6 shadow-lg">
-        <h3 className="text-lg font-semibold mb-2">{title}</h3>
-        <p className="text-sm text-muted-foreground mb-4">{message}</p>
-        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+      <div className='w-full max-w-sm rounded-lg bg-background p-4 sm:p-6 shadow-lg'>
+        <h3 className='text-lg font-semibold mb-2'>{title}</h3>
+        <p className='text-sm text-muted-foreground mb-4'>{message}</p>
+        <div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
           <button
-            type="button"
+            type='button'
             onClick={onCancel}
-            className="px-4 py-2 rounded-lg border hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 w-full sm:w-auto"
+            className='px-4 py-2 rounded-lg border hover:bg-muted transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 w-full sm:w-auto'
           >
             Cancel
           </button>
           <button
-            type="button"
+            type='button'
             onClick={onConfirm}
-            className="px-4 py-2 rounded-lg bg-destructive text-destructive-foreground font-medium hover:bg-destructive/90 transition-colors focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 w-full sm:w-auto"
+            className='px-4 py-2 rounded-lg bg-destructive text-destructive-foreground font-medium hover:bg-destructive/90 transition-colors focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2 w-full sm:w-auto'
           >
             {confirmLabel}
           </button>
@@ -222,14 +222,14 @@ export function MembersManagementPage({
   // Personal entities don't have members to manage
   if (entity.entityType === 'personal') {
     return (
-      <Section spacing="lg" maxWidth="4xl">
+      <Section spacing='lg' maxWidth='4xl'>
         <div
-          className="text-center py-8 sm:py-12 text-muted-foreground"
-          role="status"
-          aria-label="Personal workspace notice"
+          className='text-center py-8 sm:py-12 text-muted-foreground'
+          role='status'
+          aria-label='Personal workspace notice'
         >
           <p>Personal workspaces cannot have additional members.</p>
-          <p className="mt-2">
+          <p className='mt-2'>
             Create an organization to collaborate with others.
           </p>
         </div>
@@ -238,8 +238,8 @@ export function MembersManagementPage({
   }
 
   return (
-    <Section spacing="lg" maxWidth="4xl">
-      <div role="main" aria-label="Members management">
+    <Section spacing='lg' maxWidth='4xl'>
+      <div role='main' aria-label='Members management'>
         {/* Confirmation Dialog */}
         {confirmAction && (
           <ConfirmationDialog
@@ -254,7 +254,9 @@ export function MembersManagementPage({
                 : `Are you sure you want to cancel the invitation to ${confirmAction.displayLabel}?`
             }
             confirmLabel={
-              confirmAction.type === 'removeMember' ? 'Remove' : 'Cancel Invitation'
+              confirmAction.type === 'removeMember'
+                ? 'Remove'
+                : 'Cancel Invitation'
             }
             onConfirm={handleConfirmAction}
             onCancel={() => setConfirmAction(null)}
@@ -262,11 +264,11 @@ export function MembersManagementPage({
         )}
 
         {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-xl sm:text-2xl font-bold text-foreground">
+        <div className='mb-6 sm:mb-8'>
+          <h1 className='text-xl sm:text-2xl font-bold text-foreground'>
             Members
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
+          <p className='text-sm sm:text-base text-muted-foreground'>
             Manage members and invitations for {entity.displayName}
           </p>
         </div>
@@ -274,10 +276,10 @@ export function MembersManagementPage({
         {/* Invite Form */}
         {canManage && (
           <section
-            className="rounded-lg border p-3 sm:p-4 mb-6 sm:mb-8"
-            aria-label="Invite members"
+            className='rounded-lg border p-3 sm:p-4 mb-6 sm:mb-8'
+            aria-label='Invite members'
           >
-            <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
+            <h2 className='text-base sm:text-lg font-semibold mb-3 sm:mb-4'>
               Invite Members
             </h2>
             <InvitationForm
@@ -289,28 +291,28 @@ export function MembersManagementPage({
 
         {/* Pending Invitations */}
         {canManage && (
-          <section className="mb-6 sm:mb-8" aria-label="Pending invitations">
-            <h2 className="text-base sm:text-lg font-semibold mb-3">
+          <section className='mb-6 sm:mb-8' aria-label='Pending invitations'>
+            <h2 className='text-base sm:text-lg font-semibold mb-3'>
               Pending Invitations
             </h2>
             {invitationsError ? (
               <div
-                className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-center"
-                role="alert"
-                aria-live="polite"
+                className='rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-center'
+                role='alert'
+                aria-live='polite'
               >
-                <p className="text-destructive font-medium mb-2">
+                <p className='text-destructive font-medium mb-2'>
                   Failed to load invitations
                 </p>
-                <p className="text-sm text-muted-foreground mb-3">
+                <p className='text-sm text-muted-foreground mb-3'>
                   {(invitationsErrorObj as Error)?.message ||
                     'An unexpected error occurred'}
                 </p>
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => refetchInvitations()}
-                  aria-label="Retry loading invitations"
-                  className="px-3 py-1.5 text-sm rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  aria-label='Retry loading invitations'
+                  className='px-3 py-1.5 text-sm rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
                 >
                   Retry
                 </button>
@@ -319,19 +321,19 @@ export function MembersManagementPage({
               <MembersSkeleton />
             ) : invitations.length === 0 ? (
               <div
-                className="text-center py-4 sm:py-6 text-muted-foreground border border-dashed rounded-lg"
-                role="status"
+                className='text-center py-4 sm:py-6 text-muted-foreground border border-dashed rounded-lg'
+                role='status'
               >
                 <p>No pending invitations</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
+              <div className='overflow-x-auto'>
                 <InvitationList
                   invitations={invitations}
-                  mode="admin"
+                  mode='admin'
                   onCancel={handleCancelInvitation}
                   isLoading={invitationsLoading}
-                  emptyMessage="No pending invitations"
+                  emptyMessage='No pending invitations'
                 />
               </div>
             )}
@@ -339,28 +341,28 @@ export function MembersManagementPage({
         )}
 
         {/* Current Members */}
-        <section aria-label="Current members">
-          <h2 className="text-base sm:text-lg font-semibold mb-3">
+        <section aria-label='Current members'>
+          <h2 className='text-base sm:text-lg font-semibold mb-3'>
             Current Members ({members.length})
           </h2>
           {membersError ? (
             <div
-              className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-center"
-              role="alert"
-              aria-live="polite"
+              className='rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-center'
+              role='alert'
+              aria-live='polite'
             >
-              <p className="text-destructive font-medium mb-2">
+              <p className='text-destructive font-medium mb-2'>
                 Failed to load members
               </p>
-              <p className="text-sm text-muted-foreground mb-3">
+              <p className='text-sm text-muted-foreground mb-3'>
                 {(membersErrorObj as Error)?.message ||
                   'An unexpected error occurred'}
               </p>
               <button
-                type="button"
+                type='button'
                 onClick={() => refetchMembers()}
-                aria-label="Retry loading members"
-                className="px-3 py-1.5 text-sm rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                aria-label='Retry loading members'
+                className='px-3 py-1.5 text-sm rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
               >
                 Retry
               </button>
@@ -369,18 +371,18 @@ export function MembersManagementPage({
             <MembersSkeleton />
           ) : members.length === 0 ? (
             <div
-              className="text-center py-4 sm:py-6 text-muted-foreground border border-dashed rounded-lg"
-              role="status"
+              className='text-center py-4 sm:py-6 text-muted-foreground border border-dashed rounded-lg'
+              role='status'
             >
               <p>No members yet</p>
               {canManage && (
-                <p className="text-sm mt-1">
+                <p className='text-sm mt-1'>
                   Use the invite form above to add members.
                 </p>
               )}
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className='overflow-x-auto'>
               <MemberList
                 members={members}
                 currentUserId={currentUserId}

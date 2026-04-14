@@ -3,7 +3,13 @@
  */
 
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 // Mock @sudobility/entity_client hooks
@@ -14,8 +20,7 @@ const mockUseDeclineInvitation = vi.fn();
 vi.mock('@sudobility/entity_client', () => ({
   EntityClient: vi.fn(),
   useMyInvitations: (...args: unknown[]) => mockUseMyInvitations(...args),
-  useAcceptInvitation: (...args: unknown[]) =>
-    mockUseAcceptInvitation(...args),
+  useAcceptInvitation: (...args: unknown[]) => mockUseAcceptInvitation(...args),
   useDeclineInvitation: (...args: unknown[]) =>
     mockUseDeclineInvitation(...args),
 }));
@@ -35,7 +40,7 @@ vi.mock('@sudobility/entity-components', () => ({
     isLoading?: boolean;
     emptyMessage?: string;
   }) => (
-    <div data-testid="invitation-list" data-loading={isLoading}>
+    <div data-testid='invitation-list' data-loading={isLoading}>
       {invitations.map((inv: any) => (
         <div key={inv.id} data-testid={`invitation-${inv.id}`}>
           <span>{inv.entity?.displayName || inv.email}</span>
@@ -65,7 +70,7 @@ vi.mock('@sudobility/entity-components', () => ({
 // Mock @sudobility/components
 vi.mock('@sudobility/components', () => ({
   Section: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="section">{children}</div>
+    <div data-testid='section'>{children}</div>
   ),
 }));
 
@@ -175,9 +180,7 @@ describe('InvitationsPage', () => {
 
       render(<InvitationsPage client={mockClient} />);
 
-      expect(
-        screen.queryByTestId('invitation-list')
-      ).not.toBeInTheDocument();
+      expect(screen.queryByTestId('invitation-list')).not.toBeInTheDocument();
     });
   });
 
@@ -248,9 +251,7 @@ describe('InvitationsPage', () => {
 
       render(<InvitationsPage client={mockClient} />);
 
-      expect(
-        screen.getByText('No pending invitations')
-      ).toBeInTheDocument();
+      expect(screen.getByText('No pending invitations')).toBeInTheDocument();
     });
   });
 
@@ -348,7 +349,9 @@ describe('InvitationsPage', () => {
 
       fireEvent.click(screen.getByTestId('decline-inv-1'));
 
-      const dialog = screen.getByRole('dialog', { name: /decline invitation/i });
+      const dialog = screen.getByRole('dialog', {
+        name: /decline invitation/i,
+      });
       expect(dialog).toBeInTheDocument();
       expect(
         within(dialog).getByText(/decline the invitation to join/i)
@@ -374,7 +377,9 @@ describe('InvitationsPage', () => {
 
       fireEvent.click(screen.getByTestId('decline-inv-1'));
       const dialog = screen.getByRole('dialog');
-      fireEvent.click(within(dialog).getByRole('button', { name: /^decline$/i }));
+      fireEvent.click(
+        within(dialog).getByRole('button', { name: /^decline$/i })
+      );
 
       await waitFor(() => {
         expect(declineFn).toHaveBeenCalledWith('token-abc');

@@ -27,9 +27,13 @@ vi.mock('@sudobility/entity-components', () => ({
     onSelect?: (entity: unknown) => void;
     isLoading?: boolean;
   }) => (
-    <div data-testid="entity-list" data-loading={isLoading}>
+    <div data-testid='entity-list' data-loading={isLoading}>
       {(entities as any[]).map((e: any) => (
-        <button key={e.id} onClick={() => onSelect?.(e)} data-testid={`entity-${e.id}`}>
+        <button
+          key={e.id}
+          onClick={() => onSelect?.(e)}
+          data-testid={`entity-${e.id}`}
+        >
           {e.displayName}
         </button>
       ))}
@@ -40,14 +44,14 @@ vi.mock('@sudobility/entity-components', () => ({
 // Mock @sudobility/components
 vi.mock('@sudobility/components', () => ({
   Section: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="section">{children}</div>
+    <div data-testid='section'>{children}</div>
   ),
 }));
 
 // Mock @heroicons/react
 vi.mock('@heroicons/react/24/outline', () => ({
   PlusIcon: ({ className }: { className?: string }) => (
-    <svg data-testid="plus-icon" className={className} />
+    <svg data-testid='plus-icon' className={className} />
   ),
 }));
 
@@ -101,7 +105,9 @@ describe('EntityListPage', () => {
 
       render(<EntityListPage client={mockClient} />);
 
-      expect(screen.getByRole('status', { name: /loading workspaces/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('status', { name: /loading workspaces/i })
+      ).toBeInTheDocument();
       expect(screen.getByText('Loading workspaces...')).toBeInTheDocument();
     });
 
@@ -134,7 +140,9 @@ describe('EntityListPage', () => {
 
       expect(screen.getByText('Failed to load workspaces')).toBeInTheDocument();
       expect(screen.getByText('Network error')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /retry/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: /retry/i })
+      ).toBeInTheDocument();
     });
 
     test('calls refetch when retry button is clicked', () => {
@@ -237,7 +245,9 @@ describe('EntityListPage', () => {
         screen.getByRole('button', { name: /create new organization/i })
       );
 
-      expect(screen.getByRole('dialog', { name: /create organization/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('dialog', { name: /create organization/i })
+      ).toBeInTheDocument();
       expect(screen.getByLabelText('Display Name')).toBeInTheDocument();
     });
 
@@ -264,7 +274,9 @@ describe('EntityListPage', () => {
       fireEvent.change(screen.getByLabelText('Display Name'), {
         target: { value: 'New Org' },
       });
-      fireEvent.submit(screen.getByRole('form', { name: /create organization form/i }));
+      fireEvent.submit(
+        screen.getByRole('form', { name: /create organization form/i })
+      );
 
       await waitFor(() => {
         expect(mutateAsync).toHaveBeenCalledWith({
@@ -288,7 +300,9 @@ describe('EntityListPage', () => {
       fireEvent.click(
         screen.getByRole('button', { name: /create new organization/i })
       );
-      fireEvent.submit(screen.getByRole('form', { name: /create organization form/i }));
+      fireEvent.submit(
+        screen.getByRole('form', { name: /create organization form/i })
+      );
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toHaveTextContent(
@@ -350,9 +364,15 @@ describe('EntityListPage', () => {
 
       render(<EntityListPage client={mockClient} />);
 
-      expect(screen.getByRole('main', { name: /workspaces/i })).toBeInTheDocument();
-      expect(screen.getByRole('region', { name: /personal workspace/i })).toBeInTheDocument();
-      expect(screen.getByRole('region', { name: /organizations/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole('main', { name: /workspaces/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('region', { name: /personal workspace/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('region', { name: /organizations/i })
+      ).toBeInTheDocument();
     });
 
     test('create button has descriptive aria-label', () => {
