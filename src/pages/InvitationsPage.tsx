@@ -2,12 +2,10 @@
  * @fileoverview Invitations Page
  * @description Page for viewing and responding to pending invitations.
  *
- * This component uses Section internally for proper page layout.
- * Do NOT wrap this component in a Section when consuming it.
+ * Renders full-width; the consuming layout controls width and padding.
  */
 
 import { useState } from 'react';
-import { Section } from '@sudobility/components';
 import { ui } from '@sudobility/design';
 import { InvitationList } from '@sudobility/entity-components';
 import {
@@ -147,7 +145,7 @@ export function InvitationsPage({
   ).length;
 
   return (
-    <Section spacing='lg' maxWidth='4xl'>
+    <div className='w-full'>
       <div role='main' aria-label='Invitations'>
         {/* Decline Confirmation Dialog */}
         {declineTarget && (
@@ -229,6 +227,6 @@ export function InvitationsPage({
           </>
         )}
       </div>
-    </Section>
+    </div>
   );
 }

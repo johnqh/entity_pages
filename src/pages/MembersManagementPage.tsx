@@ -2,12 +2,10 @@
  * @fileoverview Members Management Page
  * @description Page container for managing entity members and invitations.
  *
- * This component uses Section internally for proper page layout.
- * Do NOT wrap this component in a Section when consuming it.
+ * Renders full-width; the consuming layout controls width and padding.
  */
 
 import { useState } from 'react';
-import { Section } from '@sudobility/components';
 import { ui } from '@sudobility/design';
 import {
   MemberList,
@@ -222,7 +220,7 @@ export function MembersManagementPage({
   // Personal entities don't have members to manage
   if (entity.entityType === 'personal') {
     return (
-      <Section spacing='lg' maxWidth='4xl'>
+      <div className='w-full'>
         <div
           className='text-center py-8 sm:py-12 text-muted-foreground'
           role='status'
@@ -233,12 +231,12 @@ export function MembersManagementPage({
             Create an organization to collaborate with others.
           </p>
         </div>
-      </Section>
+      </div>
     );
   }
 
   return (
-    <Section spacing='lg' maxWidth='4xl'>
+    <div className='w-full'>
       <div role='main' aria-label='Members management'>
         {/* Confirmation Dialog */}
         {confirmAction && (
@@ -395,6 +393,6 @@ export function MembersManagementPage({
           )}
         </section>
       </div>
-    </Section>
+    </div>
   );
 }

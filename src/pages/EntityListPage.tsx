@@ -2,14 +2,12 @@
  * @fileoverview Entity List Page
  * @description Page container for listing all user's entities.
  *
- * This component uses Section internally for proper page layout.
- * Do NOT wrap this component in a Section when consuming it.
+ * Renders full-width; the consuming layout controls width and padding.
  */
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { Section } from '@sudobility/components';
 import { ui } from '@sudobility/design';
 import { EntityList } from '@sudobility/entity-components';
 import {
@@ -95,7 +93,7 @@ export function EntityListPage({
   };
 
   return (
-    <Section spacing='lg' maxWidth='4xl'>
+    <div className='w-full'>
       <div role='main' aria-label='Workspaces'>
         {/* Header */}
         <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8'>
@@ -323,6 +321,6 @@ export function EntityListPage({
           </>
         )}
       </div>
-    </Section>
+    </div>
   );
 }
