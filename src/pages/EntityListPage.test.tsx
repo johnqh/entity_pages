@@ -41,13 +41,6 @@ vi.mock('@sudobility/entity-components', () => ({
   ),
 }));
 
-// Mock @sudobility/components
-vi.mock('@sudobility/components', () => ({
-  Section: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid='section'>{children}</div>
-  ),
-}));
-
 // Mock @heroicons/react
 vi.mock('@heroicons/react/24/outline', () => ({
   PlusIcon: ({ className }: { className?: string }) => (

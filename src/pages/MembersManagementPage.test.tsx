@@ -122,13 +122,6 @@ vi.mock('@sudobility/entity-components', () => ({
   ),
 }));
 
-// Mock @sudobility/components
-vi.mock('@sudobility/components', () => ({
-  Section: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid='section'>{children}</div>
-  ),
-}));
-
 import { MembersManagementPage } from './MembersManagementPage';
 import { EntityClient } from '@sudobility/entity_client';
 
