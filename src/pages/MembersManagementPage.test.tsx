@@ -16,19 +16,14 @@ import '@testing-library/jest-dom';
 const mockUseEntityMembers = vi.fn();
 const mockUseUpdateMemberRole = vi.fn();
 const mockUseRemoveMember = vi.fn();
-const mockUseEntityInvitations = vi.fn();
 const mockUseCreateInvitation = vi.fn();
-const mockUseCancelInvitation = vi.fn();
 
 vi.mock('@sudobility/entity_client', () => ({
   EntityClient: vi.fn(),
   useEntityMembers: (...args: unknown[]) => mockUseEntityMembers(...args),
   useUpdateMemberRole: (...args: unknown[]) => mockUseUpdateMemberRole(...args),
   useRemoveMember: (...args: unknown[]) => mockUseRemoveMember(...args),
-  useEntityInvitations: (...args: unknown[]) =>
-    mockUseEntityInvitations(...args),
   useCreateInvitation: (...args: unknown[]) => mockUseCreateInvitation(...args),
-  useCancelInvitation: (...args: unknown[]) => mockUseCancelInvitation(...args),
 }));
 
 // Mock @sudobility/entity-components
@@ -90,35 +85,8 @@ vi.mock('@sudobility/entity-components', () => ({
         onSubmit({ email: 'test@example.com', role: 'member' });
       }}
     >
-      <button type='submit'>Invite</button>
+      <button type='submit'>Send Invite</button>
     </form>
-  ),
-  InvitationList: ({
-    invitations,
-    onCancel,
-    isLoading,
-  }: {
-    invitations: any[];
-    mode: string;
-    onCancel?: (id: string) => void;
-    isLoading?: boolean;
-    emptyMessage?: string;
-  }) => (
-    <div data-testid='invitation-list' data-loading={isLoading}>
-      {invitations.map((inv: any) => (
-        <div key={inv.id} data-testid={`invitation-${inv.id}`}>
-          <span>{inv.email}</span>
-          {onCancel && (
-            <button
-              data-testid={`cancel-${inv.id}`}
-              onClick={() => onCancel(inv.id)}
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-      ))}
-    </div>
   ),
 }));
 
@@ -184,22 +152,6 @@ const mockMembers = [
   },
 ];
 
-const mockInvitations = [
-  {
-    id: 'inv-1',
-    entityId: 'org-1',
-    email: 'invited@example.com',
-    role: 'member',
-    status: 'pending',
-    invitedByUserId: 'user-1',
-    token: 'token-1',
-    expiresAt: '2025-01-01T00:00:00Z',
-    acceptedAt: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
-  },
-];
-
 function setupDefaultMocks() {
   mockUseUpdateMemberRole.mockReturnValue({
     mutateAsync: vi.fn(),
@@ -213,11 +165,16 @@ function setupDefaultMocks() {
     mutateAsync: vi.fn(),
     isPending: false,
   });
-  mockUseCancelInvitation.mockReturnValue({
-    mutateAsync: vi.fn(),
-    isPending: false,
-  });
 }
+
+const membersResult = (overrides: Record<string, unknown> = {}) => ({
+  data: mockMembers,
+  isLoading: false,
+  isError: false,
+  error: null,
+  refetch: vi.fn(),
+  ...overrides,
+});
 
 describe('MembersManagementPage', () => {
   beforeEach(() => {
@@ -227,20 +184,7 @@ describe('MembersManagementPage', () => {
 
   describe('personal entity', () => {
     test('renders personal workspace notice', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+      mockUseEntityMembers.mockReturnValue(membersResult({ data: [] }));
 
       render(
         <MembersManagementPage
@@ -258,20 +202,9 @@ describe('MembersManagementPage', () => {
 
   describe('loading state', () => {
     test('renders skeleton when members are loading', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: [],
-        isLoading: true,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+      mockUseEntityMembers.mockReturnValue(
+        membersResult({ data: [], isLoading: true })
+      );
 
       render(
         <MembersManagementPage
@@ -285,56 +218,19 @@ describe('MembersManagementPage', () => {
         screen.getByRole('status', { name: /loading members/i })
       ).toBeInTheDocument();
     });
-
-    test('renders skeleton when invitations are loading', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: true,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-
-      render(
-        <MembersManagementPage
-          client={mockClient}
-          entity={mockOrgEntity as any}
-          currentUserId='user-1'
-        />
-      );
-
-      // There should be a loading status for the invitations section
-      const loadingStatuses = screen.getAllByRole('status', {
-        name: /loading members/i,
-      });
-      expect(loadingStatuses.length).toBeGreaterThanOrEqual(1);
-    });
   });
 
   describe('error state', () => {
     test('renders member error with retry button', () => {
       const refetchFn = vi.fn();
-      mockUseEntityMembers.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: true,
-        error: new Error('Failed to fetch members'),
-        refetch: refetchFn,
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+      mockUseEntityMembers.mockReturnValue(
+        membersResult({
+          data: [],
+          isError: true,
+          error: new Error('Failed to fetch members'),
+          refetch: refetchFn,
+        })
+      );
 
       render(
         <MembersManagementPage
@@ -352,59 +248,11 @@ describe('MembersManagementPage', () => {
       );
       expect(refetchFn).toHaveBeenCalledTimes(1);
     });
-
-    test('renders invitation error with retry button', () => {
-      const refetchFn = vi.fn();
-      mockUseEntityMembers.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: true,
-        error: new Error('Failed to fetch invitations'),
-        refetch: refetchFn,
-      });
-
-      render(
-        <MembersManagementPage
-          client={mockClient}
-          entity={mockOrgEntity as any}
-          currentUserId='user-1'
-        />
-      );
-
-      expect(
-        screen.getByText('Failed to load invitations')
-      ).toBeInTheDocument();
-
-      fireEvent.click(
-        screen.getByRole('button', { name: /retry loading invitations/i })
-      );
-      expect(refetchFn).toHaveBeenCalledTimes(1);
-    });
   });
 
   describe('empty state', () => {
     test('renders empty member state', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+      mockUseEntityMembers.mockReturnValue(membersResult({ data: [] }));
 
       render(
         <MembersManagementPage
@@ -416,51 +264,11 @@ describe('MembersManagementPage', () => {
 
       expect(screen.getByText('No members yet')).toBeInTheDocument();
     });
-
-    test('renders empty invitation state', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-
-      render(
-        <MembersManagementPage
-          client={mockClient}
-          entity={mockOrgEntity as any}
-          currentUserId='user-1'
-        />
-      );
-
-      expect(screen.getByText('No pending invitations')).toBeInTheDocument();
-    });
   });
 
   describe('populated state', () => {
-    test('renders members and invitations when owner', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: mockInvitations,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+    test('renders members when owner', () => {
+      mockUseEntityMembers.mockReturnValue(membersResult());
 
       render(
         <MembersManagementPage
@@ -471,33 +279,94 @@ describe('MembersManagementPage', () => {
       );
 
       expect(screen.getByTestId('member-list')).toBeInTheDocument();
-      expect(screen.getByTestId('invitation-list')).toBeInTheDocument();
-      expect(screen.getByTestId('invitation-form')).toBeInTheDocument();
       expect(screen.getByText('Owner User')).toBeInTheDocument();
       expect(screen.getByText('Member User')).toBeInTheDocument();
-      expect(screen.getByText('invited@example.com')).toBeInTheDocument();
     });
 
-    test('does not show invite form for non-owners', () => {
-      const memberEntity = {
-        ...mockOrgEntity,
-        userRole: 'member' as const,
-      };
+    test('shows member count in the header', () => {
+      mockUseEntityMembers.mockReturnValue(membersResult());
 
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
+      render(
+        <MembersManagementPage
+          client={mockClient}
+          entity={mockOrgEntity as any}
+          currentUserId='user-1'
+        />
+      );
+
+      expect(screen.getByText(/2 members in Test Org/i)).toBeInTheDocument();
+    });
+  });
+
+  describe('invite', () => {
+    test('owner sees an Invite toggle and the (collapsed) invite panel', () => {
+      mockUseEntityMembers.mockReturnValue(membersResult());
+
+      render(
+        <MembersManagementPage
+          client={mockClient}
+          entity={mockOrgEntity as any}
+          currentUserId='user-1'
+        />
+      );
+
+      // The toggle is the button carrying aria-expanded.
+      expect(
+        screen.getByRole('button', { name: /^invite$/i, expanded: false })
+      ).toBeInTheDocument();
+      // The form is in the DOM (panel collapsed via CSS).
+      expect(screen.getByTestId('invitation-form')).toBeInTheDocument();
+    });
+
+    test('clicking Invite expands the panel', () => {
+      mockUseEntityMembers.mockReturnValue(membersResult());
+
+      render(
+        <MembersManagementPage
+          client={mockClient}
+          entity={mockOrgEntity as any}
+          currentUserId='user-1'
+        />
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', { name: /^invite$/i, expanded: false })
+      );
+
+      expect(
+        screen.getByRole('button', { name: /^invite$/i, expanded: true })
+      ).toBeInTheDocument();
+    });
+
+    test('submitting the invite form calls createInvitation', async () => {
+      const inviteFn = vi.fn().mockResolvedValue({});
+      mockUseCreateInvitation.mockReturnValue({
+        mutateAsync: inviteFn,
+        isPending: false,
       });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
+      mockUseEntityMembers.mockReturnValue(membersResult());
+
+      render(
+        <MembersManagementPage
+          client={mockClient}
+          entity={mockOrgEntity as any}
+          currentUserId='user-1'
+        />
+      );
+
+      fireEvent.submit(screen.getByTestId('invitation-form'));
+
+      await waitFor(() => {
+        expect(inviteFn).toHaveBeenCalledWith({
+          entitySlug: 'org-slug',
+          request: { email: 'test@example.com', role: 'member' },
+        });
       });
+    });
+
+    test('non-owners do not see the invite panel', () => {
+      const memberEntity = { ...mockOrgEntity, userRole: 'member' as const };
+      mockUseEntityMembers.mockReturnValue(membersResult());
 
       render(
         <MembersManagementPage
@@ -508,52 +377,15 @@ describe('MembersManagementPage', () => {
       );
 
       expect(screen.queryByTestId('invitation-form')).not.toBeInTheDocument();
-    });
-
-    test('displays member count in heading', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-
-      render(
-        <MembersManagementPage
-          client={mockClient}
-          entity={mockOrgEntity as any}
-          currentUserId='user-1'
-        />
-      );
-
-      expect(screen.getByText('Current Members (2)')).toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: /^invite$/i })
+      ).not.toBeInTheDocument();
     });
   });
 
-  describe('confirmation dialogs', () => {
+  describe('remove member confirmation', () => {
     test('shows confirmation when removing a member', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+      mockUseEntityMembers.mockReturnValue(membersResult());
 
       render(
         <MembersManagementPage
@@ -579,20 +411,7 @@ describe('MembersManagementPage', () => {
         mutateAsync: removeFn,
         isPending: false,
       });
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+      mockUseEntityMembers.mockReturnValue(membersResult());
 
       render(
         <MembersManagementPage
@@ -617,20 +436,7 @@ describe('MembersManagementPage', () => {
     });
 
     test('closes confirmation when cancelled', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+      mockUseEntityMembers.mockReturnValue(membersResult());
 
       render(
         <MembersManagementPage
@@ -646,100 +452,11 @@ describe('MembersManagementPage', () => {
       fireEvent.click(screen.getByRole('button', { name: /cancel/i }));
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
-
-    test('shows confirmation when cancelling an invitation', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: mockInvitations,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-
-      render(
-        <MembersManagementPage
-          client={mockClient}
-          entity={mockOrgEntity as any}
-          currentUserId='user-1'
-        />
-      );
-
-      fireEvent.click(screen.getByTestId('cancel-inv-1'));
-
-      expect(
-        screen.getByRole('dialog', { name: /cancel invitation/i })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/cancel the invitation to invited@example.com/i)
-      ).toBeInTheDocument();
-    });
-
-    test('calls cancelInvitation when confirmed', async () => {
-      const cancelFn = vi.fn().mockResolvedValue({});
-      mockUseCancelInvitation.mockReturnValue({
-        mutateAsync: cancelFn,
-        isPending: false,
-      });
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: mockInvitations,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-
-      render(
-        <MembersManagementPage
-          client={mockClient}
-          entity={mockOrgEntity as any}
-          currentUserId='user-1'
-        />
-      );
-
-      fireEvent.click(screen.getByTestId('cancel-inv-1'));
-      fireEvent.click(
-        screen.getByRole('button', { name: /cancel invitation/i })
-      );
-
-      await waitFor(() => {
-        expect(cancelFn).toHaveBeenCalledWith({
-          entitySlug: 'org-slug',
-          invitationId: 'inv-1',
-        });
-      });
-    });
   });
 
   describe('accessibility', () => {
-    test('has correct ARIA landmarks', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: mockInvitations,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+    test('exposes the members list as a main landmark', () => {
+      mockUseEntityMembers.mockReturnValue(membersResult());
 
       render(
         <MembersManagementPage
@@ -750,34 +467,12 @@ describe('MembersManagementPage', () => {
       );
 
       expect(
-        screen.getByRole('main', { name: /members management/i })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole('region', { name: /invite members/i })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole('region', { name: /pending invitations/i })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole('region', { name: /current members/i })
+        screen.getByRole('main', { name: /members/i })
       ).toBeInTheDocument();
     });
 
     test('confirmation dialog has proper attributes', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+      mockUseEntityMembers.mockReturnValue(membersResult());
 
       render(
         <MembersManagementPage
@@ -794,20 +489,7 @@ describe('MembersManagementPage', () => {
     });
 
     test('closes confirmation dialog with Escape key', () => {
-      mockUseEntityMembers.mockReturnValue({
-        data: mockMembers,
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
-      mockUseEntityInvitations.mockReturnValue({
-        data: [],
-        isLoading: false,
-        isError: false,
-        error: null,
-        refetch: vi.fn(),
-      });
+      mockUseEntityMembers.mockReturnValue(membersResult());
 
       render(
         <MembersManagementPage

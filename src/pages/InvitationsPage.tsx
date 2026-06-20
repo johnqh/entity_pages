@@ -7,6 +7,7 @@
 
 import { useState } from 'react';
 import { ui } from '@sudobility/design';
+import { ContentLayout } from '@sudobility/components';
 import { InvitationList } from '@sudobility/entity-components';
 import {
   useMyInvitations,
@@ -145,88 +146,91 @@ export function InvitationsPage({
   ).length;
 
   return (
-    <div className='w-full'>
-      <div role='main' aria-label='Invitations'>
-        {/* Decline Confirmation Dialog */}
-        {declineTarget && (
-          <DeclineConfirmationDialog
-            entityName={declineTarget.entityName}
-            onConfirm={handleConfirmDecline}
-            onCancel={() => setDeclineTarget(null)}
-          />
-        )}
+    <>
+      {/* Decline Confirmation Dialog */}
+      {declineTarget && (
+        <DeclineConfirmationDialog
+          entityName={declineTarget.entityName}
+          onConfirm={handleConfirmDecline}
+          onCancel={() => setDeclineTarget(null)}
+        />
+      )}
 
-        {/* Header */}
-        <div className='mb-4 sm:mb-6'>
-          <h1 className='text-xl sm:text-2xl font-bold text-foreground'>
-            Invitations
-          </h1>
-          <p className='text-sm sm:text-base text-muted-foreground'>
-            {pendingCount > 0
-              ? `You have ${pendingCount} pending invitation${pendingCount > 1 ? 's' : ''}`
-              : 'No pending invitations'}
-          </p>
-        </div>
-
-        {/* Error State */}
-        {isError && (
-          <div
-            className='rounded-lg border border-destructive/50 bg-destructive/10 p-4 sm:p-6 text-center mb-4 sm:mb-6'
-            role='alert'
-            aria-live='polite'
-          >
-            <p className='text-destructive font-medium mb-2'>
-              Failed to load invitations
+      <ContentLayout
+        header={
+          <div className='border-b bg-background px-4 py-3'>
+            <h1 className='text-lg sm:text-xl font-bold text-foreground'>
+              Invitations
+            </h1>
+            <p className='text-xs sm:text-sm text-muted-foreground'>
+              {pendingCount > 0
+                ? `You have ${pendingCount} pending invitation${pendingCount > 1 ? 's' : ''}`
+                : 'No pending invitations'}
             </p>
-            <p className='text-sm text-muted-foreground mb-4'>
-              {(error as Error)?.message || 'An unexpected error occurred'}
-            </p>
-            <button
-              type='button'
-              onClick={() => refetch()}
-              aria-label='Retry loading invitations'
-              className='px-4 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
-            >
-              Retry
-            </button>
           </div>
-        )}
-
-        {/* Loading State */}
-        {isLoading && <InvitationsSkeleton />}
-
-        {/* Content */}
-        {!isLoading && !isError && (
-          <>
-            {invitations.length === 0 ? (
-              <div
-                className='text-center py-6 sm:py-8 text-muted-foreground border border-dashed rounded-lg'
-                role='status'
+        }
+      >
+        <div className='p-4' role='main' aria-label='Invitations'>
+          {/* Error State */}
+          {isError && (
+            <div
+              className='rounded-lg border border-destructive/50 bg-destructive/10 p-4 sm:p-6 text-center'
+              role='alert'
+              aria-live='polite'
+            >
+              <p className='text-destructive font-medium mb-2'>
+                Failed to load invitations
+              </p>
+              <p className='text-sm text-muted-foreground mb-4'>
+                {(error as Error)?.message || 'An unexpected error occurred'}
+              </p>
+              <button
+                type='button'
+                onClick={() => refetch()}
+                aria-label='Retry loading invitations'
+                className='px-4 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
               >
-                <p className='text-base sm:text-lg font-medium mb-1'>
-                  No invitations
-                </p>
-                <p className='text-sm'>
-                  {"You don't have any pending invitations"}
-                </p>
-              </div>
-            ) : (
-              <section aria-label='Invitation list'>
-                <div className='overflow-x-auto'>
-                  <InvitationList
-                    invitations={invitations}
-                    mode='user'
-                    onAccept={handleAccept}
-                    onDecline={handleDecline}
-                    isLoading={isLoading}
-                    emptyMessage="You don't have any pending invitations"
-                  />
+                Retry
+              </button>
+            </div>
+          )}
+
+          {/* Loading State */}
+          {isLoading && <InvitationsSkeleton />}
+
+          {/* Content */}
+          {!isLoading && !isError && (
+            <>
+              {invitations.length === 0 ? (
+                <div
+                  className='text-center py-8 sm:py-12 text-muted-foreground border border-dashed rounded-lg'
+                  role='status'
+                >
+                  <p className='text-base sm:text-lg font-medium mb-1'>
+                    No invitations
+                  </p>
+                  <p className='text-sm'>
+                    {"You don't have any pending invitations"}
+                  </p>
                 </div>
-              </section>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+              ) : (
+                <section aria-label='Invitation list'>
+                  <div className='overflow-x-auto'>
+                    <InvitationList
+                      invitations={invitations}
+                      mode='user'
+                      onAccept={handleAccept}
+                      onDecline={handleDecline}
+                      isLoading={isLoading}
+                      emptyMessage="You don't have any pending invitations"
+                    />
+                  </div>
+                </section>
+              )}
+            </>
+          )}
+        </div>
+      </ContentLayout>
+    </>
   );
 }

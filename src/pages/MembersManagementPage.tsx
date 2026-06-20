@@ -1,24 +1,24 @@
 /**
  * @fileoverview Members Management Page
- * @description Page container for managing entity members and invitations.
+ * @description Page container for an entity's members list.
+ *
+ * Shows the members list in a ContentLayout. The header carries the title and
+ * an "Invite" button; clicking it slides a "Invite Member" panel down from the
+ * header (extending it) without leaving the page.
  *
  * Renders full-width; the consuming layout controls width and padding.
  */
 
 import { useState } from 'react';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import { ui } from '@sudobility/design';
-import {
-  MemberList,
-  InvitationForm,
-  InvitationList,
-} from '@sudobility/entity-components';
+import { ContentLayout } from '@sudobility/components';
+import { MemberList, InvitationForm } from '@sudobility/entity-components';
 import {
   useEntityMembers,
   useUpdateMemberRole,
   useRemoveMember,
-  useEntityInvitations,
   useCreateInvitation,
-  useCancelInvitation,
   EntityClient,
 } from '@sudobility/entity_client';
 import type {
@@ -107,7 +107,7 @@ function ConfirmationDialog({
 }
 
 /**
- * Page for managing entity members and invitations.
+ * Page for managing an entity's members.
  */
 export function MembersManagementPage({
   client,
@@ -116,11 +116,13 @@ export function MembersManagementPage({
 }: MembersManagementPageProps) {
   const canManage = entity.userRole === 'owner';
 
-  // Confirmation dialog state
-  const [confirmAction, setConfirmAction] = useState<{
-    type: 'removeMember' | 'cancelInvitation';
+  /** Whether the slide-down "Invite Member" panel is expanded. */
+  const [inviteOpen, setInviteOpen] = useState(false);
+
+  /** Pending "remove member" confirmation, keyed by member id. */
+  const [removeTarget, setRemoveTarget] = useState<{
     id: string;
-    displayLabel: string;
+    label: string;
   } | null>(null);
 
   // Members
@@ -134,16 +136,9 @@ export function MembersManagementPage({
   const updateRole = useUpdateMemberRole(client);
   const removeMember = useRemoveMember(client);
 
-  // Invitations
-  const {
-    data: invitations = [],
-    isLoading: invitationsLoading,
-    isError: invitationsError,
-    error: invitationsErrorObj,
-    refetch: refetchInvitations,
-  } = useEntityInvitations(client, canManage ? entity.entitySlug : null);
+  // Invitations (create only — the list of sent/received invitations lives on
+  // the dedicated Invitations page).
   const createInvitation = useCreateInvitation(client);
-  const cancelInvitation = useCancelInvitation(client);
 
   const handleRoleChange = async (memberId: string, role: EntityRole) => {
     try {
@@ -159,24 +154,22 @@ export function MembersManagementPage({
 
   const handleRemoveMember = (memberId: string) => {
     const member = members.find(m => m.id === memberId);
-    const displayLabel =
+    const label =
       member?.user?.displayName || member?.user?.email || 'this member';
-    setConfirmAction({
-      type: 'removeMember',
-      id: memberId,
-      displayLabel,
-    });
+    setRemoveTarget({ id: memberId, label });
   };
 
-  const handleConfirmRemoveMember = async (memberId: string) => {
+  const handleConfirmRemove = async () => {
+    if (!removeTarget) return;
     try {
       await removeMember.mutateAsync({
         entitySlug: entity.entitySlug,
-        memberId,
+        memberId: removeTarget.id,
       });
     } catch (err: any) {
       console.error('Failed to remove member:', err);
     }
+    setRemoveTarget(null);
   };
 
   const handleInvite = async (request: InviteMemberRequest) => {
@@ -184,45 +177,25 @@ export function MembersManagementPage({
       entitySlug: entity.entitySlug,
       request,
     });
+    // Collapse the panel only after a successful invite; on error the form
+    // stays open so the user can correct and retry.
+    setInviteOpen(false);
   };
 
-  const handleCancelInvitation = (invitationId: string) => {
-    const invitation = invitations.find(inv => inv.id === invitationId);
-    const displayLabel = invitation?.email || 'this invitation';
-    setConfirmAction({
-      type: 'cancelInvitation',
-      id: invitationId,
-      displayLabel,
-    });
-  };
-
-  const handleConfirmCancelInvitation = async (invitationId: string) => {
-    try {
-      await cancelInvitation.mutateAsync({
-        entitySlug: entity.entitySlug,
-        invitationId,
-      });
-    } catch (err: any) {
-      console.error('Failed to cancel invitation:', err);
-    }
-  };
-
-  const handleConfirmAction = async () => {
-    if (!confirmAction) return;
-    if (confirmAction.type === 'removeMember') {
-      await handleConfirmRemoveMember(confirmAction.id);
-    } else if (confirmAction.type === 'cancelInvitation') {
-      await handleConfirmCancelInvitation(confirmAction.id);
-    }
-    setConfirmAction(null);
-  };
-
-  // Personal entities don't have members to manage
+  // Personal entities don't have members to manage.
   if (entity.entityType === 'personal') {
     return (
-      <div className='w-full'>
+      <ContentLayout
+        header={
+          <div className='border-b bg-background px-4 py-3'>
+            <h1 className='text-lg sm:text-xl font-bold text-foreground'>
+              Members
+            </h1>
+          </div>
+        }
+      >
         <div
-          className='text-center py-8 sm:py-12 text-muted-foreground'
+          className='p-4 text-center py-8 sm:py-12 text-muted-foreground'
           role='status'
           aria-label='Personal workspace notice'
         >
@@ -231,118 +204,77 @@ export function MembersManagementPage({
             Create an organization to collaborate with others.
           </p>
         </div>
-      </div>
+      </ContentLayout>
     );
   }
 
   return (
-    <div className='w-full'>
-      <div role='main' aria-label='Members management'>
-        {/* Confirmation Dialog */}
-        {confirmAction && (
-          <ConfirmationDialog
-            title={
-              confirmAction.type === 'removeMember'
-                ? 'Remove Member'
-                : 'Cancel Invitation'
-            }
-            message={
-              confirmAction.type === 'removeMember'
-                ? `Are you sure you want to remove ${confirmAction.displayLabel}? They will lose access to this organization.`
-                : `Are you sure you want to cancel the invitation to ${confirmAction.displayLabel}?`
-            }
-            confirmLabel={
-              confirmAction.type === 'removeMember'
-                ? 'Remove'
-                : 'Cancel Invitation'
-            }
-            onConfirm={handleConfirmAction}
-            onCancel={() => setConfirmAction(null)}
-          />
-        )}
+    <>
+      {/* Remove-member confirmation */}
+      {removeTarget && (
+        <ConfirmationDialog
+          title='Remove Member'
+          message={`Are you sure you want to remove ${removeTarget.label}? They will lose access to this organization.`}
+          confirmLabel='Remove'
+          onConfirm={handleConfirmRemove}
+          onCancel={() => setRemoveTarget(null)}
+        />
+      )}
 
-        {/* Header */}
-        <div className='mb-6 sm:mb-8'>
-          <h1 className='text-xl sm:text-2xl font-bold text-foreground'>
-            Members
-          </h1>
-          <p className='text-sm sm:text-base text-muted-foreground'>
-            Manage members and invitations for {entity.displayName}
-          </p>
-        </div>
-
-        {/* Invite Form */}
-        {canManage && (
-          <section
-            className='rounded-lg border p-3 sm:p-4 mb-6 sm:mb-8'
-            aria-label='Invite members'
-          >
-            <h2 className='text-base sm:text-lg font-semibold mb-3 sm:mb-4'>
-              Invite Members
-            </h2>
-            <InvitationForm
-              onSubmit={handleInvite}
-              isSubmitting={createInvitation.isPending}
-            />
-          </section>
-        )}
-
-        {/* Pending Invitations */}
-        {canManage && (
-          <section className='mb-6 sm:mb-8' aria-label='Pending invitations'>
-            <h2 className='text-base sm:text-lg font-semibold mb-3'>
-              Pending Invitations
-            </h2>
-            {invitationsError ? (
-              <div
-                className='rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-center'
-                role='alert'
-                aria-live='polite'
-              >
-                <p className='text-destructive font-medium mb-2'>
-                  Failed to load invitations
+      <ContentLayout
+        header={
+          <div className='border-b bg-background'>
+            {/* Title bar */}
+            <div className='flex items-center justify-between gap-3 px-4 py-3'>
+              <div className='min-w-0'>
+                <h1 className='text-lg sm:text-xl font-bold text-foreground'>
+                  Members
+                </h1>
+                <p className='text-xs sm:text-sm text-muted-foreground truncate'>
+                  {members.length} member{members.length === 1 ? '' : 's'} in{' '}
+                  {entity.displayName}
                 </p>
-                <p className='text-sm text-muted-foreground mb-3'>
-                  {(invitationsErrorObj as Error)?.message ||
-                    'An unexpected error occurred'}
-                </p>
+              </div>
+              {canManage && (
                 <button
                   type='button'
-                  onClick={() => refetchInvitations()}
-                  aria-label='Retry loading invitations'
-                  className='px-3 py-1.5 text-sm rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
+                  onClick={() => setInviteOpen(open => !open)}
+                  aria-expanded={inviteOpen}
+                  aria-controls='invite-member-panel'
+                  className='flex flex-shrink-0 items-center gap-2 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
                 >
-                  Retry
+                  <PlusIcon className='h-4 w-4' aria-hidden='true' />
+                  <span>Invite</span>
                 </button>
-              </div>
-            ) : invitationsLoading ? (
-              <MembersSkeleton />
-            ) : invitations.length === 0 ? (
+              )}
+            </div>
+
+            {/* Slide-down Invite Member panel (extends the header) */}
+            {canManage && (
               <div
-                className='text-center py-4 sm:py-6 text-muted-foreground border border-dashed rounded-lg'
-                role='status'
+                id='invite-member-panel'
+                aria-hidden={!inviteOpen}
+                className={`grid transition-[grid-template-rows] duration-200 ease-out ${
+                  inviteOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                }`}
               >
-                <p>No pending invitations</p>
-              </div>
-            ) : (
-              <div className='overflow-x-auto'>
-                <InvitationList
-                  invitations={invitations}
-                  mode='admin'
-                  onCancel={handleCancelInvitation}
-                  isLoading={invitationsLoading}
-                  emptyMessage='No pending invitations'
-                />
+                <div className='overflow-hidden'>
+                  <div className='border-t px-4 py-3 sm:py-4'>
+                    <h2 className='text-sm font-semibold mb-3'>
+                      Invite Member
+                    </h2>
+                    <InvitationForm
+                      onSubmit={handleInvite}
+                      isSubmitting={createInvitation.isPending}
+                    />
+                  </div>
+                </div>
               </div>
             )}
-          </section>
-        )}
-
-        {/* Current Members */}
-        <section aria-label='Current members'>
-          <h2 className='text-base sm:text-lg font-semibold mb-3'>
-            Current Members ({members.length})
-          </h2>
+          </div>
+        }
+      >
+        <div className='p-4' role='main' aria-label='Members'>
           {membersError ? (
             <div
               className='rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-center'
@@ -369,13 +301,13 @@ export function MembersManagementPage({
             <MembersSkeleton />
           ) : members.length === 0 ? (
             <div
-              className='text-center py-4 sm:py-6 text-muted-foreground border border-dashed rounded-lg'
+              className='text-center py-8 sm:py-12 text-muted-foreground border border-dashed rounded-lg'
               role='status'
             >
               <p>No members yet</p>
               {canManage && (
                 <p className='text-sm mt-1'>
-                  Use the invite form above to add members.
+                  Use the Invite button to add members.
                 </p>
               )}
             </div>
@@ -391,8 +323,8 @@ export function MembersManagementPage({
               />
             </div>
           )}
-        </section>
-      </div>
-    </div>
+        </div>
+      </ContentLayout>
+    </>
   );
 }
