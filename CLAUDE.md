@@ -1,5 +1,10 @@
 # Entity Pages
 
+> **Git policy — never auto-commit or auto-push.** Leave your work in the working tree.
+> Run `git commit`, `git push`, `gh pr create`, or `scripts/push_all.sh` **only when the user
+> explicitly asks in that turn**. Approval for an earlier change does not carry forward, and
+> finishing a task is not permission to commit it.
+
 Page containers for entity/organization management in React applications.
 
 **npm**: `@sudobility/entity_pages`
@@ -161,3 +166,7 @@ bun run type-check && bun run lint && bun test && bun run build
 - **This package does NOT depend on `entity_service`** -- despite similar naming. It depends on `@sudobility/entity_client` (frontend hooks) and `@sudobility/entity-components` (UI), which are separate repos.
 - **Vite library mode build** -- produces ESM + UMD. Build is `tsc && vite build`, not just `tsc`.
 - **Heavy peer dependency list (7 packages)** -- missing any causes confusing build errors in consumers.
+
+## Git Workflow
+
+- Do not use feature branches for code changes. Always stay on the current branch.
