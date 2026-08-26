@@ -28,4 +28,6 @@ export {
   type MembersManagementPageProps,
   InvitationsPage,
   type InvitationsPageProps,
+  ApiKeysPage,
+  type ApiKeysPageProps,
 } from './pages';

@@ -18,6 +18,10 @@ vi.mock('@sudobility/entity_client', () => ({
   useMyInvitations: vi.fn(() => ({ data: [], isLoading: false })),
   useAcceptInvitation: vi.fn(() => ({ mutate: vi.fn() })),
   useDeclineInvitation: vi.fn(() => ({ mutate: vi.fn() })),
+  useEntityApiKeys: vi.fn(() => ({ data: [], isLoading: false })),
+  useCreateApiKey: vi.fn(() => ({ mutate: vi.fn() })),
+  useUpdateApiKey: vi.fn(() => ({ mutate: vi.fn() })),
+  useRevokeApiKey: vi.fn(() => ({ mutate: vi.fn() })),
 }));
 
 // Mock @sudobility/entity-components
@@ -35,6 +39,7 @@ import {
   EntityListPage,
   MembersManagementPage,
   InvitationsPage,
+  ApiKeysPage,
 } from './index';
 
 describe('entity_pages exports', () => {
@@ -51,6 +56,11 @@ describe('entity_pages exports', () => {
   test('exports InvitationsPage component', () => {
     expect(InvitationsPage).toBeDefined();
     expect(typeof InvitationsPage).toBe('function');
+  });
+
+  test('exports ApiKeysPage component', () => {
+    expect(ApiKeysPage).toBeDefined();
+    expect(typeof ApiKeysPage).toBe('function');
   });
 });
 
@@ -70,5 +80,11 @@ describe('MembersManagementPage', () => {
 describe('InvitationsPage', () => {
   test('is a valid React function component', () => {
     expect(InvitationsPage.name).toBe('InvitationsPage');
+  });
+});
+
+describe('ApiKeysPage', () => {
+  test('is a valid React function component', () => {
+    expect(ApiKeysPage.name).toBe('ApiKeysPage');
   });
 });

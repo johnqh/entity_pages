@@ -8,3 +8,4 @@ export {
   type MembersManagementPageProps,
 } from './MembersManagementPage';
 export { InvitationsPage, type InvitationsPageProps } from './InvitationsPage';
+export { ApiKeysPage, type ApiKeysPageProps } from './ApiKeysPage';
