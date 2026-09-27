@@ -10,7 +10,7 @@
         "@sudobility/components": "^5.3.24",
         "@sudobility/design": "^1.1.55",
         "@sudobility/entity-components": "^1.0.13",
-        "@sudobility/entity_client": "^0.0.42",
+        "@sudobility/entity_client": "^0.0.45",
         "@sudobility/types": "^1.9.68",
         "@tanstack/react-query": "^5.0.0",
         "@testing-library/dom": "^10.4.0",
@@ -45,7 +45,7 @@
         "@sudobility/components": "^5.3.24",
         "@sudobility/design": "^1.1.55",
         "@sudobility/entity-components": "^1.0.13",
-        "@sudobility/entity_client": "^0.0.42",
+        "@sudobility/entity_client": "^0.0.45",
         "@sudobility/types": "^1.9.68",
         "@tanstack/react-query": "^5.0.0",
         "react": "^18.0.0 || ^19.0.0",
@@ -358,7 +358,7 @@
 
     "@sudobility/entity-components": ["@sudobility/entity-components@1.0.13", "", { "optionalDependencies": { "@rollup/rollup-linux-x64-gnu": "4.52.5", "@rollup/rollup-linux-x64-musl": "4.52.5" }, "peerDependencies": { "@sudobility/components": "^5.0.7", "@sudobility/design": "^1.1.18", "@sudobility/types": "^1.9.50", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-eEInGlG/d/WEjbpky06J0oapXekWog0b1IJTnCZfnUrsFSyK0rktNecA8wEx0bQ075ZmeOeagA1Vdhy619Ek8A=="],
 
-    "@sudobility/entity_client": ["@sudobility/entity_client@0.0.42", "", { "peerDependencies": { "@sudobility/types": "^1.9.68", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-LMbkrQ4d+3jR13J3r1lrbNRyWFoUrB+FCbUaEatRyhXB+TrTsXRf0XPU8AllvW6e4GOSwY7GXRwOCCyF4oTNuA=="],
+    "@sudobility/entity_client": ["@sudobility/entity_client@0.0.45", "", { "peerDependencies": { "@sudobility/types": "^1.9.68", "@tanstack/react-query": "^5.0.0", "react": "^18.0.0 || ^19.0.0" } }, "sha512-1+GMvQZwnha2DRWDxP63tDgke+4QSwnYPV/td0Pxf3cgsjQ4QPw/uLYE8fCc1bUUz5T53Sw3PDnD/p+905bt0g=="],
 
     "@sudobility/types": ["@sudobility/types@1.9.68", "", {}, "sha512-4LL5+UfcqQcc0PKKR/z/PqS6j9DQPVkkjL+3oOW+Bwx0TAu1SVKAlPhlt/9ruNMW+abcHuZoFvbOVD5gdYBSGw=="],
 
